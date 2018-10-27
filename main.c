@@ -7,7 +7,7 @@
 #include "heap.h"
 #include "ops.h"
 
-#define TESTSIZE 100
+#define TESTSIZE 10000
 
 int main(void)
 {
@@ -21,20 +21,20 @@ int main(void)
 
         for (i=0; i<TESTSIZE; i++) {
                 op.pid = rand();
-                op.s[rand()%COLLAB_MAX]++;
                 //for (j=0; j<COLLAB_MAX; j++) {
                 //        printf("%u, ", op.s[j]);
                 //} printf("\n");
                 receive_op(op);
+                op.s[rand()%COLLAB_MAX]++;
         }
 
         printf("=============================================\n");
 
         for (i=0; i<TESTSIZE; i++) {
                 nextop = heap_extract(&Queue);
-                for (j=0; j<COLLAB_MAX; j++) {
-                        printf("%u, ", nextop->s[j]);
-                } printf("\n");
+                //for (j=0; j<COLLAB_MAX; j++) {
+                //        printf("%u, ", nextop->s[j]);
+                //} printf("\n");
         }
 
         return 0;

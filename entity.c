@@ -3,15 +3,18 @@
 
 #include "heap.h"
 #include "ops.h"
+#include "queue.h"
 
 heap Queue;
-heap Log;
+queue *Log;
+
+uint32_t state[COLLAB_MAX] = { 0 };
 
 void
 entity_init(void)
 {
         heap_init(&Queue, 1024, comp_operation);
-        heap_init(&Log, 1024, comp_operation);
+        Log = q_alloc(1024);
 }
 
 void
