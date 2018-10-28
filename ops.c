@@ -3,18 +3,18 @@
 static op
 t_ii(op a, op b, int pa, int pb)
 {
-        if (a.o.pos < b.o.pos) {
+        if (a.pos < b.pos) {
         }
-        else if (a.o.pos > b.o.pos) {
-                a.o.pos++;
+        else if (a.pos > b.pos) {
+                a.pos++;
         }
         else {
-                if (a.o.c == b.o.c) {
-                        a.o.c = ''
+                if (a.c == b.c) {
+                        a.c = '\0';
                 }
                 else {
                         if (pa > pb)
-                                a.o.pos++;
+                                a.pos++;
                 }
         }
 
