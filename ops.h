@@ -13,6 +13,7 @@ enum optype {
 typedef struct {
         enum optype type;
         char c;
+        uint32_t pos;
 } op;
 
 typedef struct {

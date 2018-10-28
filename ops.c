@@ -3,6 +3,22 @@
 static op
 t_ii(op a, op b, int pa, int pb)
 {
+        if (a.o.pos < b.o.pos) {
+        }
+        else if (a.o.pos > b.o.pos) {
+                a.o.pos++;
+        }
+        else {
+                if (a.o.c == b.o.c) {
+                        a.o.c = ''
+                }
+                else {
+                        if (pa > pb)
+                                a.o.pos++;
+                }
+        }
+
+        return a;
 }
 
 static op
