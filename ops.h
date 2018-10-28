@@ -27,4 +27,7 @@ op_transform(op a, op b, int pa, int pb);
 char
 comp_operation(void *, void *);
 
+void
+op_perform(operation *op);
+
 #endif /* _OPS_H */

@@ -51,3 +51,8 @@ comp_operation(void *a, void *b)
 
         return ret;
 }
+
+void
+op_perform(operation *op)
+{
+}

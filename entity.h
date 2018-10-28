@@ -1,11 +1,7 @@
 #ifndef _ENTITY_H
 #define _ENTITY_H
 
-#include "heap.h"
 #include "ops.h"
-
-extern heap Queue;
-extern heap Log;
 
 void
 entity_init(void);
