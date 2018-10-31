@@ -1,5 +1,7 @@
 #include "ops.h"
 
+// TODO maintain data object for operations
+
 static op
 t_ii(op a, op b, int pa, int pb)
 {
@@ -24,16 +26,40 @@ t_ii(op a, op b, int pa, int pb)
 static op
 t_ir(op a, op b, int pa, int pb)
 {
+        if (a.pos < b.pos) {
+        }
+        else if (a.pos > b.pos) {
+                a.pos--;
+        }
+        else {
+        }
+
+        return a;
 }
 
 static op
 t_ri(op a, op b, int pa, int pb)
 {
+        if (a.pos < b.pos) {
+        }
+        else {
+                a.pos++;
+        }
+
+        return a;
 }
 
 static op
 t_rr(op a, op b, int pa, int pb)
 {
+        if (a.pos < b.pos) {
+        }
+        else if (a.pos > b.pos) {
+                a.pos--;
+        }
+        else {
+                a.type = NULLOP;
+        }
 }
 
 op
