@@ -7,7 +7,8 @@
 
 enum optype {
         INSERT,
-        REMOVE
+        REMOVE,
+        NULLOP
 };
 
 typedef struct {

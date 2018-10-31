@@ -10,7 +10,7 @@ t_ii(op a, op b, int pa, int pb)
         }
         else {
                 if (a.c == b.c) {
-                        a.c = '\0';
+                        a.type = NULLOP;
                 }
                 else {
                         if (pa > pb)
