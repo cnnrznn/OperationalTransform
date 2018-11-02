@@ -39,11 +39,12 @@ exec_operations(void)
                 if (comp_operation(op, &us) < 0)
                         continue;                       // 'future' operation (sending site has executed other ops that we haven't
                 if (0 == comp_operation(op, &us))
-                        goto exec;                      // clocks are the same, i.e. op executed on sender at the same logical time
+                        goto exec;                      // clocks are the same, i.e. op executed on sender at current logical time
 
                 // operation happened in the past, must tranform in order to execute now
 
                 // find most recent log entry where the clock is <= op's
+                lop = NULL;
                 for (j=Log->n-1; j>=0; j--) {
                         if (comp_operation(Log->arr[j], op) >= 0) {
                                 lop = Log->arr[j];
