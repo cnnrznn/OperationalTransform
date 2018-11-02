@@ -102,8 +102,8 @@ op_perform(op o)
 
         switch (o.type) {
         case INSERT:
-                for (i=o.pos; i<DOCSIZE-1; i++)
-                        document[i+1] = document[i];
+                for (i=DOCSIZE-1; i>o.pos; i--)
+                        document[i] = document[i-1];
                 document[o.pos] = o.c;
                 break;
         case REMOVE:
