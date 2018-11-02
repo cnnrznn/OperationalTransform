@@ -6,6 +6,7 @@
 
 extern uint32_t state[];
 extern queue *Log;
+extern queue *Queue;
 
 void
 entity_init(void);
@@ -15,5 +16,8 @@ recv_operation(operation op);
 
 void
 exec_operations(void);
+
+void
+print_state(void);
 
 #endif /* _ENTITY_H */
