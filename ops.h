@@ -4,15 +4,16 @@
 #include <stdint.h>
 
 #define COLLAB_MAX 64
+#define DOCSIZE 8192
 
-enum optype {
-        INSERT,
-        REMOVE,
-        NULLOP
-};
+#define INSERT  1
+#define REMOVE  2
+#define NULLOP  3
+
+extern char document[];
 
 typedef struct {
-        enum optype type;
+        int type;
         char c;
         uint32_t pos;
 } op;
@@ -30,6 +31,6 @@ char
 comp_operation(void *, void *);
 
 void
-op_perform(operation *op);
+op_perform(op o);
 
 #endif /* _OPS_H */

@@ -65,7 +65,7 @@ exec:
                 q_remove(Queue, i);
                 i--;
 
-                op_perform(op);
+                op_perform(op->o);
                 memcpy(op->s, state, COLLAB_MAX*sizeof(uint32_t)); // op performed at OUR clock
                 q_push(Log, op);
                 state[op->pid]++;

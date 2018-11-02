@@ -1,6 +1,7 @@
 #include "ops.h"
 
 // TODO maintain data object for operations
+char document[DOCSIZE];
 
 static op
 t_ii(op a, op b, int pa, int pb)
@@ -95,6 +96,20 @@ comp_operation(void *a, void *b)
 }
 
 void
-op_perform(operation *op)
+op_perform(op o)
 {
+        int i;
+
+        switch (o.type) {
+        case INSERT:
+                for (i=o.pos; i<DOCSIZE-1; i++)
+                        document[i+1] = document[i];
+                document[o.pos] = o.c;
+                break;
+        case REMOVE:
+                for (i=o.pos; i<DOCSIZE-1; i++)
+                        document[i] = document[i+1];
+                document[DOCSIZE-1] = '\0';
+                break;
+        }
 }
