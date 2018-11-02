@@ -61,6 +61,8 @@ t_rr(op a, op b, int pa, int pb)
         else {
                 a.type = NULLOP;
         }
+
+        return a;
 }
 
 op
