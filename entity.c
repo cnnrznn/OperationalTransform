@@ -17,7 +17,7 @@ entity_init(void)
 }
 
 void
-receive_op(operation op)
+recv_operation(operation op)
 {
         operation *newop = malloc(sizeof(operation));
         memcpy(newop, &op, sizeof(operation));
@@ -26,7 +26,7 @@ receive_op(operation op)
 }
 
 void
-exec_op(void)
+exec_operations(void)
 {
         int i, j;
         operation *op, us, *lop=NULL;

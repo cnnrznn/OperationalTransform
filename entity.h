@@ -3,13 +3,15 @@
 
 #include "ops.h"
 
+extern uint32_t state[];
+
 void
 entity_init(void);
 
 void
-receive_op(operation op);
+recv_operation(operation op);
 
 void
-exec_op(void);
+exec_operations(void);
 
 #endif /* _ENTITY_H */
