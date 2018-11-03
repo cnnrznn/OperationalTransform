@@ -11,6 +11,31 @@ queue *Log;
 uint32_t state[COLLAB_MAX] = { 0 };
 
 void
+print_log(void)
+{
+        int i;
+        operation *op;
+
+        fprintf(stderr, "Log = {\n");
+        for (i=0; i<Log->n; i++) {
+                op = Log->arr[i];
+                fprintf(stderr, "\t%u, %d, %c, %u\n", op->pid, op->o.type, op->o.c, op->o.pos);
+        }
+        fprintf(stderr, "}\n");
+}
+
+void
+print_state(void)
+{
+        int i;
+
+        fprintf(stderr, "{");
+        for (i=0; i<COLLAB_MAX; i++)
+                fprintf(stderr, "%u, ", state[i]);
+        fprintf(stderr, "}\n");
+}
+
+void
 entity_init(void)
 {
         Queue = q_alloc(1024);
@@ -73,16 +98,7 @@ exec:
                         q_push(Log, op);
                         state[op->pid]++;
                 }
+
+                print_log();
         }
-}
-
-void
-print_state(void)
-{
-        int i;
-
-        fprintf(stderr, "{");
-        for (i=0; i<COLLAB_MAX; i++)
-                fprintf(stderr, "%u, ", state[i]);
-        fprintf(stderr, "}\n");
 }
