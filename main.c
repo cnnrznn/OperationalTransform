@@ -27,6 +27,10 @@ bozosort(void *a, void *b)
 
 int main(int argc, char **argv)
 {
+        doc_client_init();
+
+        // receive ops from ui
+        // pull ops to send to server
 
         return 0;
 }

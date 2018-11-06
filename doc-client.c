@@ -11,7 +11,7 @@ static uint32_t pid;
 static uint32_t rev;
 
 void
-doc_clien_init()
+doc_client_init()
 {
         sent = q_alloc(8);
         pend = q_alloc(8);

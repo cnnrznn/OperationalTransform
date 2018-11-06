@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-#define COLLAB_MAX 64
 #define DOCSIZE 8192
 
 #define INSERT  1
@@ -11,6 +10,7 @@
 #define NULLOP  3
 
 extern char document[];
+extern uint32_t revision;
 
 typedef struct {
         int type;

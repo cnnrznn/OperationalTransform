@@ -1,6 +1,7 @@
 #include "ops.h"
 
 char document[DOCSIZE];
+uint32_t revision = 0;
 
 static op
 t_ii(op a, op b)
