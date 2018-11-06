@@ -20,12 +20,12 @@ typedef struct {
 
 typedef struct {
         uint32_t pid;
-        uint32_t s[COLLAB_MAX];
+        uint32_t rev;
         op o;
 } operation;
 
 op
-op_transform(op a, op b, int pa, int pb);
+op_transform(op a, op b);
 
 char
 comp_operation(void *, void *);
