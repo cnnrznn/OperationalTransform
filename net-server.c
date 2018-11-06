@@ -1,6 +1,14 @@
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+
 #include "net.h"
 
 static int lsk;
+static int conn[1024];
+static int nconn = 0;
 
 int
 net_init()
@@ -43,4 +51,5 @@ net_drain()
         // process all messages in buffer
         // switch()
         //      - operations
+        //      - new connections
 }
