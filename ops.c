@@ -1,6 +1,5 @@
 #include "ops.h"
 
-// TODO maintain data object for operations
 char document[DOCSIZE];
 
 static op
