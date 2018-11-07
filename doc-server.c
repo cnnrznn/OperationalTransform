@@ -14,15 +14,16 @@ log_put(operation *op)
         int i;
         operation *lop = NULL;
 
+        lop = Log->arr[Log->n-1];
+        if (lop->rev == op->rev)
+                goto perf;
+
         // walk back through log to last where op->rev == lop->rev
         for (i=Log->n-1; i<=0; i--) {
                 lop = Log->arr[i];
                 if (lop->rev == op->rev)
                         break;
         }
-
-        if (i < 0)              // first operation appended to log
-                goto perf;
 
         // walk forward, transforming op
         for (; i<Log->n; i++) {
