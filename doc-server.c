@@ -80,4 +80,6 @@ doc_server_drain(void)
 
         while (NULL != (op = q_pop(pend)))
                 log_put(op);
+
+        free(op);
 }

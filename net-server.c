@@ -80,9 +80,16 @@ net_server_free()
 void
 net_server_broadcast(operation *op)
 {
-        // TODO broadcast operation to all connections
-        // TODO send ack to sender
-        // DEBUG print the operation and exit
+        int i;
+
+        for (i=0; i<nconn; i++) {
+                if (op->pid == i) {
+                        // send ack
+                }
+                else {
+                        // send op
+                }
+        }
 }
 
 void
