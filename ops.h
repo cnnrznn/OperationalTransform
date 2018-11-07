@@ -28,9 +28,6 @@ typedef struct {
 op
 op_transform(op a, op b);
 
-char
-comp_operation(void *, void *);
-
 void
 op_perform(op o);
 

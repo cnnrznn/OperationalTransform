@@ -22,10 +22,10 @@ int main(int argc, char **argv)
 {
         op o, *newop;
 
-        signal(SIGINT, sigint_handler);
+        //signal(SIGINT, sigint_handler);
 
-        net_client_init();
         doc_client_init();
+        net_client_init();
 
         while (1) {
                 fprintf(stderr, "Client loop\n");
@@ -36,6 +36,10 @@ int main(int argc, char **argv)
                         doc_client_put_user_op(newop);
                 }
                 net_client_drain();
+                doc_client_drain();
+
+                print_document(stdout);
+                sleep(2);
         }
 
         print_document(stdout);

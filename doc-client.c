@@ -1,10 +1,10 @@
 #include <stdlib.h>
 
 #include "doc-client.h"
+#include "net-client.h"
 #include "ops.h"
 #include "queue.h"
 
-static queue *sent;
 static queue *pend;
 
 static uint32_t pid;
@@ -13,7 +13,6 @@ static uint32_t rev;
 void
 doc_client_init()
 {
-        sent = q_alloc(8);
         pend = q_alloc(8);
 }
 
@@ -26,10 +25,18 @@ doc_client_free()
 /*
  * Get the next pending operation to send to the server.
  */
-op *
-doc_client_get_pend_op(void)
+void
+doc_client_drain(void)
 {
-        return q_pop(pend);
+        // pop element from pending, push to net-client
+        op *o;
+
+        if (NULL != (o = q_peek(pend)) && 0 == net_client_inflight) {
+                q_pop(pend);
+                net_client_send(o);
+        }
+
+        free(o);
 }
 
 /*

@@ -13,6 +13,8 @@
 #include "ops.h"
 
 static int sk;
+char net_client_inflight = 0;
+static int pid;
 
 int
 net_client_init()
@@ -37,6 +39,12 @@ net_client_init()
                 return -1;
         }
 
+        // receive PID
+        read(sk, &pid, sizeof(int));
+        fprintf(stderr, "PID: %d\n", pid);
+
+        // TODO receive current document, revision?
+
         return 0;
 }
 
@@ -51,8 +59,15 @@ net_client_free()
 void
 net_client_send(op *o)
 {
-        // TODO package op as operation
-        // TODO send operation to server
+        operation oper;
+
+        net_client_inflight = 1;
+
+        oper.pid = pid;
+        oper.rev = revision;
+        oper.o = *o;
+
+        write(sk, &oper, sizeof(operation));
 }
 
 void

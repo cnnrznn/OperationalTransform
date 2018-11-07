@@ -16,12 +16,14 @@ static int conn[1024];
 static int nconn = 0;
 static fd_set rfds;
 static int fdmax;
+static int next_pid = 0;
 
 static void
 recv_operation(int sk)
 {
         operation *op = malloc(sizeof(operation));
         read(sk, op, sizeof(operation));
+        fprintf(stderr, "Read operation from socket\n");
         doc_server_put_op(op);
 }
 
@@ -107,5 +109,9 @@ net_server_drain()
                 FD_SET(newfd, &rfds);
                 if (newfd > fdmax)
                         fdmax = newfd;
+
+                // send PID
+                write(newfd, &next_pid, sizeof(int));
+                next_pid++;
         }
 }

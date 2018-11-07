@@ -14,8 +14,7 @@ log_put(operation *op)
         int i;
         operation *lop = NULL;
 
-        lop = Log->arr[Log->n-1];
-        if (lop->rev == op->rev)
+        if (Log->n <= 0)
                 goto perf;
 
         // walk back through log to last where op->rev == lop->rev

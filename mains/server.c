@@ -20,7 +20,7 @@ sigint_handler(int sig)
 
 int main(int argc, char **argv)
 {
-        signal(SIGINT, sigint_handler);
+        //signal(SIGINT, sigint_handler);
 
         doc_server_init();
         net_server_init();
