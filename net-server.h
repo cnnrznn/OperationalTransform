@@ -5,6 +5,6 @@ int net_server_init(void);
 void net_server_free(void);
 
 void net_server_drain(void);
-void net_server_broadcast(opmsg *);
+void net_server_broadcast(message *);
 
 #endif /* _NET_SERVER_H */

@@ -13,26 +13,26 @@ static void
 log_put(message *msg)
 {
         int i;
-        message *lop = NULL;
+        message *lmsg;
 
         if (Log->n <= 0)
                 goto perf;
 
-        // walk back through log to last where op->rev == lop->rev
+        // walk back through log to last where op->rev == lmsg->rev
         for (i=Log->n-1; i<=0; i--) {
-                lop = Log->arr[i];
-                if (lop->rev == msg->rev)
+                lmsg = Log->arr[i];
+                if (lmsg->rev == msg->rev)
                         break;
         }
 
         // walk forward, transforming op
         for (; i<Log->n; i++) {
-                lop = Log->arr[i];
-                msg->o = op_transform(msg->o, lop->o);
+                lmsg = Log->arr[i];
+                msg->op = op_transform(msg->op, lmsg->op);
         }
 
 perf:
-        op_perform(msg->o);
+        op_perform(msg->op);
         net_server_broadcast(msg);
 }
 
@@ -57,30 +57,30 @@ void
 print_log(FILE *f)
 {
         int i;
-        message *lop;
+        message *lmsg;
 
         fprintf(f, "Log:\n");
         for (i=0; i<Log->n; i++) {
-                lop = Log->arr[i];
-                fprintf(f, "%u, %u, (%d, %c, %u)\n", lop->pid, lop->rev, lop->o.type,
-                                                lop->o.c, lop->o.pos);
+                lmsg = Log->arr[i];
+                fprintf(f, "%u, %u, (%d, %c, %u)\n", lmsg->pid, lmsg->rev, lmsg->op.type,
+                                                lmsg->op.c, lmsg->op.pos);
         }
         fprintf(f, "\n");
 }
 
 void
-doc_server_put_op(message *op)
+doc_server_put_op(message *msg)
 {
-        q_push(pend, op);
+        q_push(pend, msg);
 }
 
 void
 doc_server_drain(void)
 {
-        message *op;
+        message *msg;
 
-        while (NULL != (op = q_pop(pend)))
-                log_put(op);
+        while (NULL != (msg = q_pop(pend)))
+                log_put(msg);
 
-        free(op);
+        free(msg);
 }

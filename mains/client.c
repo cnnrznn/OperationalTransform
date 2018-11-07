@@ -20,7 +20,7 @@ sigint_handler(int sig)
 
 int main(int argc, char **argv)
 {
-        op o, *newop;
+        operation op, *newop;
 
         //signal(SIGINT, sigint_handler);
 
@@ -29,9 +29,9 @@ int main(int argc, char **argv)
 
         while (1) {
                 fprintf(stderr, "Client loop\n");
-                if (EOF != scanf("%d,%c,%u", &o.type, &o.c, &o.pos)) {
-                        newop = malloc(sizeof(op));
-                        memcpy(newop, &o, sizeof(op));
+                if (EOF != scanf("%d,%c,%u", &op.type, &op.c, &op.pos)) {
+                        newop = malloc(sizeof(operation));
+                        memcpy(newop, &op, sizeof(operation));
 
                         doc_client_put_user_op(newop);
                 }

@@ -29,44 +29,44 @@ void
 doc_client_drain(void)
 {
         // pop element from pending, push to net-client
-        op *o;
+        operation *op;
 
-        if (NULL != (o = q_peek(pend)) && 0 == net_client_inflight) {
+        if (NULL != (op = q_peek(pend)) && 0 == net_client_inflight) {
                 q_pop(pend);
-                net_client_send(o);
+                net_client_send(op);
         }
 
-        free(o);
+        free(op);
 }
 
 /*
  * Receive an operation to apply immediately from the ui.
  */
 void
-doc_client_put_user_op(op *o)
+doc_client_put_user_op(operation *op)
 {
         // push to pending operations
-        q_push(pend, o);
+        q_push(pend, op);
 
         // apply operation
-        op_perform(*o);
+        op_perform(*op);
 }
 
 /*
  * Receive an operation from the server to transform pending operations against.
  */
 void
-doc_client_put_serv_op(op *o)
+doc_client_put_serv_op(operation *op)
 {
-        op *p;
+        operation *pop;
         int i;
 
         // transform all operations in 'pend' against op
         for (i=0; i<pend->n; i++) {
-                p = pend->arr[i];
-                *p = op_transform(*p, *o);
+                pop = pend->arr[i];
+                *pop = op_transform(*pop, *op);
         }
 
         // apply op
-        op_perform(*o);
+        op_perform(*op);
 }

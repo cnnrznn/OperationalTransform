@@ -57,17 +57,17 @@ net_client_free()
 }
 
 void
-net_client_send(op *o)
+net_client_send(operation *op)
 {
-        opmsg msg;
+        message msg;
 
         net_client_inflight = 1;
 
         msg.pid = pid;
         msg.rev = revision;
-        msg.o = *o;
+        msg.op = *op;
 
-        write(sk, &msg, sizeof(opmsg));
+        write(sk, &msg, sizeof(message));
 }
 
 void

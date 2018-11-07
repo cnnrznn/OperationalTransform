@@ -19,11 +19,11 @@ static int fdmax;
 static int next_pid = 0;
 
 static void
-recv_opmsg(int sk)
+recv_message(int sk)
 {
-        opmsg *msg = malloc(sizeof(opmsg));
-        read(sk, msg, sizeof(opmsg));
-        fprintf(stderr, "Read opmsg from socket\n");
+        message *msg = malloc(sizeof(message));
+        read(sk, msg, sizeof(message));
+        fprintf(stderr, "Read message from socket\n");
         doc_server_put_op(msg);
 }
 
@@ -78,7 +78,7 @@ net_server_free()
 }
 
 void
-net_server_broadcast(opmsg *msg)
+net_server_broadcast(message *msg)
 {
         int i;
 
@@ -105,7 +105,7 @@ net_server_drain()
 
         for (i=0; i<nconn; i++) {
                 if (FD_ISSET(conn[i], &tmpfds)) {
-                        recv_opmsg(conn[i]);
+                        recv_message(conn[i]);
                 }
         }
 

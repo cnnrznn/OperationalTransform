@@ -22,10 +22,10 @@ typedef struct {
 typedef struct {
         uint32_t pid;
         uint32_t rev;
-        op o;
+        operation op;
 } message;
 
-op
+operation
 op_transform(operation a, operation b);
 
 void
