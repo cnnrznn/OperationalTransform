@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "doc-server.h"
+#include "net-server.h"
 #include "ops.h"
 #include "queue.h"
 
@@ -31,6 +32,7 @@ log_put(operation *op)
 
 perf:
         op_perform(op->o);
+        net_server_broadcast(op);
 }
 
 void

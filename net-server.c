@@ -1,11 +1,13 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include "doc-server.h"
 #include "net.h"
 #include "ops.h"
 
@@ -18,9 +20,9 @@ static int fdmax;
 static void
 recv_operation(int sk)
 {
-        // read operation from socket
-        // malloc/memcpy
-        // send to doc-server
+        operation *op = malloc(sizeof(operation));
+        read(sk, op, sizeof(operation));
+        doc_server_put_op(op);
 }
 
 int
@@ -78,6 +80,7 @@ net_server_broadcast(operation *op)
 {
         // TODO broadcast operation to all connections
         // TODO send ack to sender
+        // DEBUG print the operation and exit
 }
 
 void
