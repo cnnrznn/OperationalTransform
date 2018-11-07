@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 #include "net.h"
 
@@ -11,7 +12,7 @@ static int conn[1024];
 static int nconn = 0;
 
 int
-net_init()
+net_server_init()
 {
         struct addrinfo hints, *res;
 
@@ -40,13 +41,19 @@ net_init()
 }
 
 void
-net_free()
+net_server_free()
 {
+        int i;
+
         // TODO close sockets!!!
+        close(lsk);
+
+        for (i=0; i<nconn; i++)
+                close(conn[i]);
 }
 
 void
-net_drain()
+net_server_drain()
 {
         // process all messages in buffer
         // switch()

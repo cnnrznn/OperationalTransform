@@ -7,27 +7,6 @@
 static queue *Log;
 static queue *pend;
 
-void
-print_log(FILE *f)
-{
-        int i;
-        operation *lop;
-
-        fprintf(f, "Log:\n");
-        for (i=0; i<Log->n; i++) {
-                lop = Log->arr[i];
-                fprintf(f, "%u, %u, (%d, %c, %u)\n", lop->pid, lop->rev, lop->o.type,
-                                                lop->o.c, lop->o.pos);
-        }
-        fprintf(f, "\n");
-}
-
-void
-put_operation(operation *op)
-{
-        q_push(pend, op);
-}
-
 static void
 log_put(operation *op)
 {
@@ -55,7 +34,44 @@ perf:
 }
 
 void
-process_pending(void)
+doc_server_init()
+{
+        Log = q_alloc(8);
+
+        // restore from checkpoint?
+        // open new file?
+        // ???
+}
+
+void
+doc_server_free()
+{
+        // meh.
+}
+
+void
+print_log(FILE *f)
+{
+        int i;
+        operation *lop;
+
+        fprintf(f, "Log:\n");
+        for (i=0; i<Log->n; i++) {
+                lop = Log->arr[i];
+                fprintf(f, "%u, %u, (%d, %c, %u)\n", lop->pid, lop->rev, lop->o.type,
+                                                lop->o.c, lop->o.pos);
+        }
+        fprintf(f, "\n");
+}
+
+void
+doc_server_put_op(operation *op)
+{
+        q_push(pend, op);
+}
+
+void
+doc_server_drain(void)
 {
         operation *op;
 
