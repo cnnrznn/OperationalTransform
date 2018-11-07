@@ -37,6 +37,7 @@ void
 doc_server_init()
 {
         Log = q_alloc(8);
+        pend = q_alloc(8);
 
         // restore from checkpoint?
         // open new file?
