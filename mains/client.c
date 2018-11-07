@@ -22,8 +22,8 @@ int main(int argc, char **argv)
 {
         signal(SIGINT, sigint_handler);
 
-        doc_client_init();
         net_client_init();
+        doc_client_init();
 
         while (cont) {
                 fprintf(stderr, "Client loop\n");
@@ -31,8 +31,6 @@ int main(int argc, char **argv)
 
         net_client_free();
         doc_client_free();
-
-        print_log(stdout);
 
         return 0;
 }
