@@ -17,19 +17,19 @@ typedef struct {
         int type;
         char c;
         uint32_t pos;
-} op;
+} operation;
 
 typedef struct {
         uint32_t pid;
         uint32_t rev;
         op o;
-} operation;
+} message;
 
 op
-op_transform(op a, op b);
+op_transform(operation a, operation b);
 
 void
-op_perform(op o);
+op_perform(operation o);
 
 void
 print_document(FILE *);

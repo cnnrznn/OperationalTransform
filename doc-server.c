@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "doc-server.h"
 #include "net-server.h"
@@ -9,10 +10,10 @@ static queue *Log;
 static queue *pend;
 
 static void
-log_put(operation *op)
+log_put(message *msg)
 {
         int i;
-        operation *lop = NULL;
+        message *lop = NULL;
 
         if (Log->n <= 0)
                 goto perf;
@@ -20,19 +21,19 @@ log_put(operation *op)
         // walk back through log to last where op->rev == lop->rev
         for (i=Log->n-1; i<=0; i--) {
                 lop = Log->arr[i];
-                if (lop->rev == op->rev)
+                if (lop->rev == msg->rev)
                         break;
         }
 
         // walk forward, transforming op
         for (; i<Log->n; i++) {
                 lop = Log->arr[i];
-                op->o = op_transform(op->o, lop->o);
+                msg->o = op_transform(msg->o, lop->o);
         }
 
 perf:
-        op_perform(op->o);
-        net_server_broadcast(op);
+        op_perform(msg->o);
+        net_server_broadcast(msg);
 }
 
 void
@@ -56,7 +57,7 @@ void
 print_log(FILE *f)
 {
         int i;
-        operation *lop;
+        message *lop;
 
         fprintf(f, "Log:\n");
         for (i=0; i<Log->n; i++) {
@@ -68,7 +69,7 @@ print_log(FILE *f)
 }
 
 void
-doc_server_put_op(operation *op)
+doc_server_put_op(message *op)
 {
         q_push(pend, op);
 }
@@ -76,7 +77,7 @@ doc_server_put_op(operation *op)
 void
 doc_server_drain(void)
 {
-        operation *op;
+        message *op;
 
         while (NULL != (op = q_pop(pend)))
                 log_put(op);

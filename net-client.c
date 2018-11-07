@@ -59,15 +59,15 @@ net_client_free()
 void
 net_client_send(op *o)
 {
-        operation oper;
+        opmsg msg;
 
         net_client_inflight = 1;
 
-        oper.pid = pid;
-        oper.rev = revision;
-        oper.o = *o;
+        msg.pid = pid;
+        msg.rev = revision;
+        msg.o = *o;
 
-        write(sk, &oper, sizeof(operation));
+        write(sk, &msg, sizeof(opmsg));
 }
 
 void

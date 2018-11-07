@@ -3,8 +3,8 @@
 char document[DOCSIZE];
 uint32_t revision = 0;
 
-static op
-t_ii(op a, op b)
+static operation
+t_ii(operation a, operation b)
 {
         if (a.pos < b.pos) {
         }
@@ -20,8 +20,8 @@ t_ii(op a, op b)
         return a;
 }
 
-static op
-t_ir(op a, op b)
+static operation
+t_ir(operation a, operation b)
 {
         if (a.pos < b.pos) {
         }
@@ -34,8 +34,8 @@ t_ir(op a, op b)
         return a;
 }
 
-static op
-t_ri(op a, op b)
+static operation
+t_ri(operation a, operation b)
 {
         if (a.pos < b.pos) {
         }
@@ -46,8 +46,8 @@ t_ri(op a, op b)
         return a;
 }
 
-static op
-t_rr(op a, op b)
+static operation
+t_rr(operation a, operation b)
 {
         if (a.pos < b.pos) {
         }
@@ -61,8 +61,8 @@ t_rr(op a, op b)
         return a;
 }
 
-op
-op_transform(op a, op b)
+operation
+op_transform(operation a, operation b)
 {
         if (INSERT == a.type && INSERT == b.type)
                 return t_ii(a, b);
@@ -82,7 +82,7 @@ print_document(FILE *f)
 }
 
 void
-op_perform(op o)
+op_perform(operation o)
 {
         int i;
 
