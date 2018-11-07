@@ -1,11 +1,14 @@
 src=$(wildcard *.c)
 obj=$(src:.c=.o)
 
-all: docs
+all: server client
 
-docs: $(obj)
-	gcc -o $@ $^
+server: $(obj)
+	gcc mains/server.c -o $@ $^ -I./
+
+client: $(obj)
+	gcc mains/client.c -o $@ $^ -I./
 
 .PHONY: clean
 clean:
-	rm -f $(obj) docs
+	rm -f $(obj) server client

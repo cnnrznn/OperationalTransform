@@ -91,4 +91,6 @@ op_perform(op o)
                 document[DOCSIZE-1] = '\0';
                 break;
         }
+
+        revision++;
 }

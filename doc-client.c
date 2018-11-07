@@ -27,7 +27,7 @@ doc_client_free()
  * Get the next pending operation to send to the server.
  */
 op *
-get_pend_op(void)
+doc_client_get_pend_op(void)
 {
         return q_pop(pend);
 }
@@ -36,7 +36,7 @@ get_pend_op(void)
  * Receive an operation to apply immediately from the ui.
  */
 void
-put_user_op(op *o)
+doc_client_put_user_op(op *o)
 {
         // push to pending operations
         q_push(pend, o);
@@ -49,7 +49,7 @@ put_user_op(op *o)
  * Receive an operation from the server to transform pending operations against.
  */
 void
-put_serv_op(op *o)
+doc_client_put_serv_op(op *o)
 {
         op *p;
         int i;
