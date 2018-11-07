@@ -2,6 +2,7 @@
 #define _OPS_H
 
 #include <stdint.h>
+#include <stdio.h>
 
 #define DOCSIZE 8192
 
@@ -32,5 +33,8 @@ comp_operation(void *, void *);
 
 void
 op_perform(op o);
+
+void
+print_document(FILE *);
 
 #endif /* _OPS_H */

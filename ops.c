@@ -75,6 +75,13 @@ op_transform(op a, op b)
 }
 
 void
+print_document(FILE *f)
+{
+        document[DOCSIZE-1] = '\0';
+        fprintf(f, "%s\n", document);
+}
+
+void
 op_perform(op o)
 {
         int i;
