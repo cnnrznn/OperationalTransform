@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "doc-server.h"
+#include "ot-server.h"
 #include "net.h"
 #include "ops.h"
 
@@ -24,7 +24,7 @@ recv_message(int sk)
         message *msg = malloc(sizeof(message));
         read(sk, msg, sizeof(message));
         fprintf(stderr, "Read message from socket\n");
-        doc_server_put_op(msg);
+        ot_server_put_op(msg);
 }
 
 int
@@ -85,10 +85,14 @@ net_server_broadcast(message *msg)
         for (i=0; i<nconn; i++) {
                 if (msg->pid == i) {
                         // send ack
+                        msg->type = ACK;
                 }
                 else {
                         // send op
+                        msg->type = MSG;
                 }
+
+                write(conn[i], msg, sizeof(message));
         }
 }
 

@@ -28,6 +28,8 @@ ot_client_free()
 void
 ot_client_drain(void)
 {
+        fprintf(stderr, "ot_client_drain()\n");
+
         // pop element from pending, push to net-client
         operation *op;
 
@@ -45,6 +47,8 @@ ot_client_drain(void)
 void
 ot_client_put_user_op(operation *op)
 {
+        fprintf(stderr, "ot_client_put_user_op()\n");
+
         // push to pending operations
         q_push(pend, op);
 
@@ -58,6 +62,8 @@ ot_client_put_user_op(operation *op)
 void
 ot_client_put_serv_op(operation *op)
 {
+        fprintf(stderr, "ot_client_put_serv_op()\n");
+
         operation *pop;
         int i;
 

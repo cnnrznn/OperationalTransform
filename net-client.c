@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "doc-client.h"
+#include "ot-client.h"
 #include "net.h"
 #include "net-client.h"
 #include "ops.h"
@@ -59,6 +59,8 @@ net_client_free()
 void
 net_client_send(operation *op)
 {
+        fprintf(stderr, "net_client_send()\n");
+
         message msg;
 
         net_client_inflight = 1;
@@ -66,6 +68,7 @@ net_client_send(operation *op)
         msg.pid = pid;
         msg.rev = revision;
         msg.op = *op;
+        msg.type = MSG;
 
         write(sk, &msg, sizeof(message));
 }
@@ -73,6 +76,20 @@ net_client_send(operation *op)
 void
 net_client_drain()
 {
-        // TODO recv acks, new operations
-        // TODO send operations to doc-client
+        fprintf(stderr, "net_client_send()\n");
+
+        message msg;
+
+        while (recv(sk, &msg, sizeof(message), MSG_DONTWAIT) > 0) {
+                revision = msg.rev;
+
+                switch (msg.type) {
+                case ACK:
+                        net_client_inflight = 0;
+                        break;
+                case MSG:
+                        ot_client_put_serv_op(&msg.op);
+                        break;
+                }
+        }
 }

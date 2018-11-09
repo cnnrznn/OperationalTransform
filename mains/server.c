@@ -5,7 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "doc-server.h"
+#include "ot-server.h"
 #include "ops.h"
 #include "net-server.h"
 #include "queue.h"
@@ -20,19 +20,19 @@ sigint_handler(int sig)
 
 int main(int argc, char **argv)
 {
-        //signal(SIGINT, sigint_handler);
+        signal(SIGINT, sigint_handler);
 
-        doc_server_init();
+        ot_server_init();
         net_server_init();
 
         while (cont) {
                 fprintf(stderr, "Server loop\n");
                 net_server_drain();
-                doc_server_drain();
+                ot_server_drain();
         }
 
         net_server_free();
-        doc_server_free();
+        ot_server_free();
 
         print_log(stdout);
 

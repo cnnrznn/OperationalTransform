@@ -5,7 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "doc-client.h"
+#include "ot-client.h"
 #include "ops.h"
 #include "net-client.h"
 #include "queue.h"
@@ -22,9 +22,9 @@ int main(int argc, char **argv)
 {
         operation op, *newop;
 
-        //signal(SIGINT, sigint_handler);
+        signal(SIGINT, sigint_handler);
 
-        doc_client_init();
+        ot_client_init();
         net_client_init();
 
         while (1) {
@@ -33,10 +33,10 @@ int main(int argc, char **argv)
                         newop = malloc(sizeof(operation));
                         memcpy(newop, &op, sizeof(operation));
 
-                        doc_client_put_user_op(newop);
+                        ot_client_put_user_op(newop);
                 }
                 net_client_drain();
-                doc_client_drain();
+                ot_client_drain();
 
                 print_document(stdout);
                 sleep(2);
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
         print_document(stdout);
 
         net_client_free();
-        doc_client_free();
+        ot_client_free();
 
         return 0;
 }

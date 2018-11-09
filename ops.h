@@ -10,6 +10,9 @@
 #define REMOVE  2
 #define NULLOP  3
 
+#define ACK     1
+#define MSG     2
+
 extern char document[];
 extern uint32_t revision;
 
@@ -20,6 +23,7 @@ typedef struct {
 } operation;
 
 typedef struct {
+        int type;
         uint32_t pid;
         uint32_t rev;
         operation op;
