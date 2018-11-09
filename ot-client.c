@@ -11,13 +11,13 @@ static uint32_t pid;
 static uint32_t rev;
 
 void
-doc_client_init()
+ot_client_init()
 {
         pend = q_alloc(8);
 }
 
 void
-doc_client_free()
+ot_client_free()
 {
         // meh.
 }
