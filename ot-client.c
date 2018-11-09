@@ -85,6 +85,7 @@ ot_client_put_serv_op(operation *op)
                 fprintf(stderr, "Transform (%d, %c, %u) against (%d, %c, %u)\n",
                         pop->type, pop->c, pop->pos, op->type, op->c, op->pos);
                 *pop = op_transform(*pop, *op);
+                *op = newop;
         }
 
         // apply op
