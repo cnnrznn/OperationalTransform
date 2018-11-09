@@ -7,8 +7,21 @@
 
 static queue *pend;
 
-static uint32_t pid;
-static uint32_t rev;
+uint32_t revision;
+
+void
+print_pend(FILE *f)
+{
+        int i;
+        operation *op;
+
+        fprintf(f, "{");
+        for (i=0; i<pend->n; i++) {
+                op = pend->arr[i];
+                fprintf(f, "(%d, %c, %u), ", op->type, op->c, op->pos);
+        }
+        fprintf(f, "}\n");
+}
 
 void
 ot_client_init()
@@ -28,7 +41,7 @@ ot_client_free()
 void
 ot_client_drain(void)
 {
-        fprintf(stderr, "ot_client_drain()\n");
+        print_pend(stderr);
 
         // pop element from pending, push to net-client
         operation *op;
@@ -36,9 +49,8 @@ ot_client_drain(void)
         if (NULL != (op = q_peek(pend)) && 0 == net_client_inflight) {
                 q_pop(pend);
                 net_client_send(op);
+                free(op);
         }
-
-        free(op);
 }
 
 /*
@@ -47,8 +59,6 @@ ot_client_drain(void)
 void
 ot_client_put_user_op(operation *op)
 {
-        fprintf(stderr, "ot_client_put_user_op()\n");
-
         // push to pending operations
         q_push(pend, op);
 
@@ -62,8 +72,6 @@ ot_client_put_user_op(operation *op)
 void
 ot_client_put_serv_op(operation *op)
 {
-        fprintf(stderr, "ot_client_put_serv_op()\n");
-
         operation *pop;
         int i;
 

@@ -1,7 +1,6 @@
 #include "ops.h"
 
 char document[DOCSIZE];
-uint32_t revision = 0;
 
 static operation
 t_ii(operation a, operation b)
@@ -98,6 +97,4 @@ op_perform(operation o)
                 document[DOCSIZE-1] = '\0';
                 break;
         }
-
-        revision++;
 }

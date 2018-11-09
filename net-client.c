@@ -41,9 +41,10 @@ net_client_init()
 
         // receive PID
         read(sk, &pid, sizeof(int));
-        fprintf(stderr, "PID: %d\n", pid);
 
-        // TODO receive current document, revision?
+        // receive current document, revision
+        read(sk, &document, DOCSIZE);
+        read(sk, &revision, sizeof(uint32_t));
 
         return 0;
 }
@@ -59,8 +60,6 @@ net_client_free()
 void
 net_client_send(operation *op)
 {
-        fprintf(stderr, "net_client_send()\n");
-
         message msg;
 
         net_client_inflight = 1;
@@ -76,8 +75,6 @@ net_client_send(operation *op)
 void
 net_client_drain()
 {
-        fprintf(stderr, "net_client_send()\n");
-
         message msg;
 
         while (recv(sk, &msg, sizeof(message), MSG_DONTWAIT) > 0) {

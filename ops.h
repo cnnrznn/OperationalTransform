@@ -14,7 +14,6 @@
 #define MSG     2
 
 extern char document[];
-extern uint32_t revision;
 
 typedef struct {
         int type;

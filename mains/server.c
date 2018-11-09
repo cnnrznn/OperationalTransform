@@ -30,7 +30,7 @@ int main(int argc, char **argv)
                 net_server_drain();
                 ot_server_drain();
 
-                print_log(stdout);
+                print_log(stderr);
         }
 
         net_server_free();

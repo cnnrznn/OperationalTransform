@@ -23,7 +23,6 @@ recv_message(int sk)
 {
         message *msg = malloc(sizeof(message));
         read(sk, msg, sizeof(message));
-        fprintf(stderr, "Read message from socket\n");
         ot_server_put_op(msg);
 }
 
@@ -124,5 +123,11 @@ net_server_drain()
                 // send PID
                 write(newfd, &next_pid, sizeof(int));
                 next_pid++;
+
+                // send DOCUMENT
+                write(newfd, document, DOCSIZE);
+
+                // send REVISION
+                write(newfd, &revision, sizeof(uint32_t));
         }
 }
