@@ -27,18 +27,22 @@ int main(int argc, char **argv)
         ot_client_init();
         net_client_init();
 
+        // "instant user input"
+        while (EOF != scanf("%d,%c,%u", &op.type, &op.c, &op.pos)) {
+                newop = malloc(sizeof(operation));
+                memcpy(newop, &op, sizeof(operation));
+
+                ot_client_put_user_op(newop);
+        }
+
+        print_document(stderr);
+
         while (1) {
                 fprintf(stderr, "Client loop\n");
-                if (EOF != scanf("%d,%c,%u", &op.type, &op.c, &op.pos)) {
-                        newop = malloc(sizeof(operation));
-                        memcpy(newop, &op, sizeof(operation));
-
-                        ot_client_put_user_op(newop);
-                }
                 net_client_drain();
                 ot_client_drain();
 
-                print_document(stdout);
+                print_document(stderr);
                 sleep(1);
         }
 

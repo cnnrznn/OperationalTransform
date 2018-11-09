@@ -78,6 +78,8 @@ ot_client_put_serv_op(operation *op)
         // transform all operations in 'pend' against op
         for (i=0; i<pend->n; i++) {
                 pop = pend->arr[i];
+                fprintf(stderr, "Transform (%d, %c, %u) against (%d, %c, %u)\n",
+                        pop->type, pop->c, pop->pos, op->type, op->c, op->pos);
                 *pop = op_transform(*pop, *op);
         }
 
