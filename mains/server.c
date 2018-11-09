@@ -29,12 +29,12 @@ int main(int argc, char **argv)
                 fprintf(stderr, "Server loop\n");
                 net_server_drain();
                 ot_server_drain();
+
+                print_log(stdout);
         }
 
         net_server_free();
         ot_server_free();
-
-        print_log(stdout);
 
         return 0;
 }

@@ -39,7 +39,7 @@ int main(int argc, char **argv)
                 ot_client_drain();
 
                 print_document(stdout);
-                sleep(2);
+                sleep(1);
         }
 
         print_document(stdout);
