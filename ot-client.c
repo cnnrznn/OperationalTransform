@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "ot-client.h"
 #include "net-client.h"
@@ -72,17 +73,20 @@ ot_client_put_user_op(operation *op)
 void
 ot_client_put_serv_op(operation *op)
 {
-        operation *pop;
+        operation *pop, newop;
         int i;
+
+        newop = *op;
 
         // transform all operations in 'pend' against op
         for (i=0; i<pend->n; i++) {
                 pop = pend->arr[i];
+                newop = op_transform(newop, *pop);
                 fprintf(stderr, "Transform (%d, %c, %u) against (%d, %c, %u)\n",
                         pop->type, pop->c, pop->pos, op->type, op->c, op->pos);
                 *pop = op_transform(*pop, *op);
         }
 
         // apply op
-        op_perform(*op);
+        op_perform(newop);
 }
