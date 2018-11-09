@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "doc-client.h"
+#include "ot-client.h"
 #include "net-client.h"
 #include "ops.h"
 #include "queue.h"
@@ -26,7 +26,7 @@ ot_client_free()
  * Get the next pending operation to send to the server.
  */
 void
-doc_client_drain(void)
+ot_client_drain(void)
 {
         // pop element from pending, push to net-client
         operation *op;
@@ -43,7 +43,7 @@ doc_client_drain(void)
  * Receive an operation to apply immediately from the ui.
  */
 void
-doc_client_put_user_op(operation *op)
+ot_client_put_user_op(operation *op)
 {
         // push to pending operations
         q_push(pend, op);
@@ -56,7 +56,7 @@ doc_client_put_user_op(operation *op)
  * Receive an operation from the server to transform pending operations against.
  */
 void
-doc_client_put_serv_op(operation *op)
+ot_client_put_serv_op(operation *op)
 {
         operation *pop;
         int i;

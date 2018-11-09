@@ -1,13 +1,13 @@
-#ifndef _DOC_CLIENT_H
-#define _DOC_CLIENT_H
+#ifndef _OT_CLIENT_H
+#define _OT_CLIENT_H
 
 #include "ops.h"
 
-void doc_client_init();
-void doc_client_free();
+void ot_client_init();
+void ot_client_free();
 
-void doc_client_drain();
-void doc_client_put_user_op(operation *);
-void doc_client_pus_serv_op(operation *);
+void ot_client_drain();
+void ot_client_put_user_op(operation *);
+void ot_client_pus_serv_op(operation *);
 
-#endif /* _DOC_CLIENT_H */
+#endif /* _OT_CLIENT_H */

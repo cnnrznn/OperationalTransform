@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "doc-server.h"
+#include "ot-server.h"
 #include "net-server.h"
 #include "ops.h"
 #include "queue.h"
@@ -37,7 +37,7 @@ perf:
 }
 
 void
-doc_server_init()
+ot_server_init()
 {
         Log = q_alloc(8);
         pend = q_alloc(8);
@@ -48,7 +48,7 @@ doc_server_init()
 }
 
 void
-doc_server_free()
+ot_server_free()
 {
         // meh.
 }
@@ -69,13 +69,13 @@ print_log(FILE *f)
 }
 
 void
-doc_server_put_op(message *msg)
+ot_server_put_op(message *msg)
 {
         q_push(pend, msg);
 }
 
 void
-doc_server_drain(void)
+ot_server_drain(void)
 {
         message *msg;
 
