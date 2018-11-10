@@ -13,17 +13,64 @@
 
 static int lsk;
 static int conn[1024];
+static int pids[1024];
 static int nconn = 0;
 static fd_set rfds;
 static int fdmax;
 static int next_pid = 0;
 
 static void
+remove_conn(int i)
+{
+        FD_CLR(conn[i], &rfds);
+        close(conn[i]);
+
+        for (; i<nconn-1; i++) {
+                conn[i] = conn[i+1];
+                pids[i] = pids[i+1];
+        }
+
+        nconn--;
+}
+
+static void
+add_conn()
+{
+        int newfd;
+        struct sockaddr_storage addr;
+        socklen_t addr_size = sizeof(addr);
+
+        newfd = accept(lsk, (struct sockaddr *)&addr, &addr_size);
+        conn[nconn] = newfd;
+        pids[nconn] = next_pid;
+        nconn++;
+        FD_SET(newfd, &rfds);
+        if (newfd > fdmax)
+                fdmax = newfd;
+
+        // send PID
+        write(newfd, &next_pid, sizeof(int));
+        next_pid++;
+
+        // send DOCUMENT
+        write(newfd, document, DOCSIZE);
+
+        // send REVISION
+        write(newfd, &revision, sizeof(uint32_t));
+}
+
+static int
 recv_message(int sk)
 {
-        message *msg = malloc(sizeof(message));
-        read(sk, msg, sizeof(message));
+        message tmp, *msg;
+        if (0 == read(sk, &tmp, sizeof(message)))
+                return -1;
+
+        msg = malloc(sizeof(message));
+        memcpy(msg, &tmp, sizeof(message));
         ot_server_put_op(msg);
+
+        return 0;
 }
 
 int
@@ -82,7 +129,7 @@ net_server_broadcast(message *msg)
         int i;
 
         for (i=0; i<nconn; i++) {
-                if (msg->pid == i) {
+                if (msg->pid == pids[i]) {
                         // send ack
                         msg->type = ACK;
                 }
@@ -99,35 +146,19 @@ void
 net_server_drain()
 {
         int i;
-        int newfd;
-        struct sockaddr_storage addr;
-        socklen_t addr_size = sizeof(addr);
         fd_set tmpfds = rfds;
 
         select(fdmax+1, &tmpfds, NULL, NULL, NULL);
 
         for (i=0; i<nconn; i++) {
                 if (FD_ISSET(conn[i], &tmpfds)) {
-                        recv_message(conn[i]);
+                        if (recv_message(conn[i])) {
+                                remove_conn(i);
+                                i--;
+                        }
                 }
         }
 
-        if (FD_ISSET(lsk, &tmpfds)) {
-                newfd = accept(lsk, (struct sockaddr *)&addr, &addr_size);
-                conn[nconn] = newfd;
-                nconn++;
-                FD_SET(newfd, &rfds);
-                if (newfd > fdmax)
-                        fdmax = newfd;
-
-                // send PID
-                write(newfd, &next_pid, sizeof(int));
-                next_pid++;
-
-                // send DOCUMENT
-                write(newfd, document, DOCSIZE);
-
-                // send REVISION
-                write(newfd, &revision, sizeof(uint32_t));
-        }
+        if (FD_ISSET(lsk, &tmpfds))
+                add_conn();
 }

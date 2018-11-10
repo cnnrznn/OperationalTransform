@@ -41,6 +41,7 @@ net_client_init()
 
         // receive PID
         read(sk, &pid, sizeof(int));
+        fprintf(stderr, "PID: %d\n", pid);
 
         // receive current document, revision
         read(sk, &document, DOCSIZE);
