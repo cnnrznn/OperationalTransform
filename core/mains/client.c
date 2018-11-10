@@ -41,8 +41,8 @@ int main(int argc, char **argv)
         signal(SIGINT, sigint_handler);
         srand(time(NULL));
 
-        ot_client_init();
-        net_client_init();
+        if (ot_client_init() || net_client_init())
+                goto cleanup;
 
         //// "instant user input"
         //while (EOF != scanf("%d,%c,%u", &op.type, &op.c, &op.pos)) {
@@ -66,6 +66,7 @@ int main(int argc, char **argv)
                 sleep(1);
         }
 
+cleanup:
         net_client_free();
         ot_client_free();
 

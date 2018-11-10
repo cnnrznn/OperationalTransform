@@ -5,7 +5,7 @@
 
 extern uint32_t revision;
 
-void ot_client_init();
+int ot_client_init();
 void ot_client_free();
 
 void ot_client_drain();

@@ -24,7 +24,7 @@ print_pend(FILE *f)
         fprintf(f, "}\n");
 }
 
-void
+int
 ot_client_init()
 {
         pend = q_alloc(8);
