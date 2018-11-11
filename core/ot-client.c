@@ -28,6 +28,8 @@ int
 ot_client_init()
 {
         pend = q_alloc(8);
+
+        return 0;
 }
 
 void
@@ -42,7 +44,7 @@ ot_client_free()
 void
 ot_client_drain(void)
 {
-        print_pend(stderr);
+        //print_pend(stderr);
 
         // pop element from pending, push to net-client
         operation *op;
@@ -82,8 +84,8 @@ ot_client_put_serv_op(operation *op)
         for (i=0; i<pend->n; i++) {
                 pop = pend->arr[i];
                 newop = op_transform(newop, *pop);
-                fprintf(stderr, "Transform (%d, %c, %u) against (%d, %c, %u)\n",
-                        pop->type, pop->c, pop->pos, op->type, op->c, op->pos);
+                //fprintf(stderr, "Transform (%d, %c, %u) against (%d, %c, %u)\n",
+                //        pop->type, pop->c, pop->pos, op->type, op->c, op->pos);
                 *pop = op_transform(*pop, *op);
                 *op = newop;
         }

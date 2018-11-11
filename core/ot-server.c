@@ -17,11 +17,8 @@ log_put(message *msg)
         int i;
         message *lmsg;
 
-        if (Log->n <= 0)
-                goto perf;
-
         // walk back through log to last where op->rev == lmsg->rev
-        for (i=Log->n-1; i<=0; i--) {
+        for (i=Log->n-1; i>=0; i--) {
                 lmsg = Log->arr[i];
                 if (lmsg->rev == msg->rev)
                         break;

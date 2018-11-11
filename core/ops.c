@@ -71,6 +71,8 @@ op_transform(operation a, operation b)
                 return t_ri(a, b);
         if (REMOVE == a.type && REMOVE == b.type)
                 return t_rr(a, b);
+
+        return a;
 }
 
 void
