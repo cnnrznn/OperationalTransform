@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define DOCSIZE 8192
+#define DOCSIZE 128
 
 #define INSERT  1
 #define REMOVE  2

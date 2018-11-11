@@ -22,6 +22,8 @@ int main(int argc, char **argv)
 {
         signal(SIGINT, sigint_handler);
 
+        memset(document, ' ', DOCSIZE);
+
         ot_server_init();
         net_server_init();
 

@@ -10,6 +10,9 @@
 #include "net-client.h"
 #include "queue.h"
 
+#define NROUNDS 10000
+
+static int i;
 static char cont = 1;
 
 static void
@@ -17,12 +20,12 @@ do_input()
 {
         operation *op;
 
-        if (rand()%1000 > 50)
+        if (rand()%1000 > 200)
                 return;
 
         op = malloc(sizeof(operation));
         op->type = (rand() % 2) + 1;
-        op->c = (rand() % 129) + 97; // a through }
+        op->c = (rand() % 25) + 97; // a through }
         op->pos = rand() % DOCSIZE;
 
         ot_client_put_user_op(op);
@@ -54,8 +57,9 @@ int main(int argc, char **argv)
 
         //print_document(stderr);
 
-        while (1) {
-                do_input();
+        for (i=0; i<NROUNDS*1.25; i++) {
+                if (NROUNDS > i)
+                        do_input();
 
                 //fprintf(stderr, "Client loop\n");
                 net_client_drain();
@@ -63,7 +67,7 @@ int main(int argc, char **argv)
 
                 print_document(stderr);
 
-                sleep(1);
+                sleep(0.5);
         }
 
 cleanup:

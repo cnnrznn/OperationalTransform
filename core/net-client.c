@@ -25,7 +25,7 @@ net_client_init()
         hints.ai_family = AF_INET;
         hints.ai_socktype = SOCK_STREAM;
 
-        getaddrinfo("0.0.0.100", PORT, &hints, &res);
+        getaddrinfo("10.10.0.100", PORT, &hints, &res);
 
         if ((sk = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) < 0) {
                 perror("Failed to create socket");
