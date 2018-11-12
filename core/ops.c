@@ -1,9 +1,10 @@
 #include "ops.h"
 
 char document[DOCSIZE];
+uint32_t revision = 0;
 
 static operation
-t_ii(operation a, operation b)
+t_ii(operation a, operation b, int pa, int pb)
 {
         if (a.pos < b.pos) {
         }
@@ -13,6 +14,9 @@ t_ii(operation a, operation b)
         else {
                 if (a.c == b.c) {
                         a.type = NULLOP;
+                }
+                else if (pa > pb) {
+                        a.pos++;
                 }
         }
 
@@ -61,10 +65,10 @@ t_rr(operation a, operation b)
 }
 
 operation
-op_transform(operation a, operation b)
+op_transform(operation a, operation b, int pa, int pb)
 {
         if (INSERT == a.type && INSERT == b.type)
-                return t_ii(a, b);
+                return t_ii(a, b, pa, pb);
         if (INSERT == a.type && REMOVE == b.type)
                 return t_ir(a, b);
         if (REMOVE == a.type && INSERT == b.type)
@@ -78,14 +82,17 @@ op_transform(operation a, operation b)
 void
 print_document(FILE *f)
 {
-        document[DOCSIZE-1] = '\0';
-        fprintf(f, "%s\n", document);
+        document[DOCSIZE] = '\0';
+        fprintf(f, "%u---%s\n", revision, document);
 }
 
 void
 op_perform(operation o)
 {
         int i;
+
+        if (o.pos >= DOCSIZE)
+                return;
 
         switch (o.type) {
         case INSERT:

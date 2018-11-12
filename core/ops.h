@@ -14,6 +14,7 @@
 #define MSG     2
 
 extern char document[];
+extern uint32_t revision;
 
 typedef struct {
         int type;
@@ -29,7 +30,7 @@ typedef struct {
 } message;
 
 operation
-op_transform(operation a, operation b);
+op_transform(operation a, operation b, int, int);
 
 void
 op_perform(operation o);
