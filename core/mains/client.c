@@ -10,7 +10,7 @@
 #include "net-client.h"
 #include "queue.h"
 
-#define NROUNDS 10000
+#define NROUNDS 100
 
 static int i;
 static char cont = 1;
@@ -57,9 +57,13 @@ int main(int argc, char **argv)
 
         //print_document(stderr);
 
-        for (i=0; i<NROUNDS*1.25; i++) {
-                if (NROUNDS > i)
+        //for (i=0; i<NROUNDS*10; i++) {
+        i=0;
+        while (1) {
+                if (NROUNDS > i) {
                         do_input();
+                        i++;
+                }
 
                 //fprintf(stderr, "Client loop\n");
                 net_client_drain();
@@ -67,7 +71,7 @@ int main(int argc, char **argv)
 
                 print_document(stderr);
 
-                sleep(0.5);
+                sleep(1);
         }
 
 cleanup:
