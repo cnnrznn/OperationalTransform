@@ -25,7 +25,7 @@ do_input()
 
         op = malloc(sizeof(operation));
         op->type = (rand() % 2) + 1;
-        op->c = (rand() % 25) + 97; // a through }
+        op->c = (rand() % 26) + 97; // a through z
         op->pos = rand() % DOCSIZE;
 
         ot_client_put_user_op(op);
