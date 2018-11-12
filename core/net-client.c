@@ -63,12 +63,9 @@ net_client_send(operation *op)
 {
         message msg;
 
-        net_client_inflight = 1;
-
         msg.pid = pid;
         msg.rev = revision;
         msg.op = *op;
-        msg.type = MSG;
 
         write(sk, &msg, sizeof(message));
 }
@@ -85,16 +82,8 @@ net_client_drain()
                         exit(1);
                 }
 
-                if (NULLOP != msg.op.type)
-                        revision = msg.rev;
+                revision = msg.rev;
 
-                switch (msg.type) {
-                case ACK:
-                        net_client_inflight = 0;
-                        break;
-                case MSG:
-                        ot_client_put_serv_msg(&msg);
-                        break;
-                }
+                ot_client_put_serv_msg(&msg);
         }
 }

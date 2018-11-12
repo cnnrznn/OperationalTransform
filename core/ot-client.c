@@ -8,8 +8,6 @@
 
 static queue *pend;
 
-uint32_t revision;
-
 void
 print_pend(FILE *f)
 {
@@ -50,9 +48,13 @@ ot_client_drain(void)
         operation *op;
 
         if (NULL != (op = q_peek(pend)) && 0 == net_client_inflight) {
-                q_pop(pend);
-                net_client_send(op);
-                free(op);
+                if (NULLOP != op->type) {
+                        net_client_send(op);
+                        net_client_inflight = 1;
+                }
+                else {
+                        free(q_pop(pend));
+                }
         }
 }
 
@@ -73,21 +75,27 @@ ot_client_put_user_op(operation *op)
  * Receive an operation from the server to transform pending operations against.
  */
 void
-ot_client_put_serv_op(operation *op)
+ot_client_put_serv_msg(message *msg)
 {
         operation *pop, newop;
         int i;
 
-        newop = *op;
+        if (pid == msg->pid) {
+                net_client_inflight = 0;
+                free(q_pop(pend));
+                return;
+        }
+
+        newop = msg->op;
 
         // transform all operations in 'pend' against op
         for (i=0; i<pend->n; i++) {
                 pop = pend->arr[i];
-                newop = op_transform(newop, *pop);
+                newop = op_transform(newop, *pop, msg->pid, pid);
                 //fprintf(stderr, "Transform (%d, %c, %u) against (%d, %c, %u)\n",
                 //        pop->type, pop->c, pop->pos, op->type, op->c, op->pos);
-                *pop = op_transform(*pop, *op);
-                *op = newop;
+                *pop = op_transform(*pop, msg->op, pid, msg->pid);
+                msg->op = newop;
         }
 
         // apply op

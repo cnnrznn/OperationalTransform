@@ -135,18 +135,8 @@ net_server_broadcast(message *msg)
 {
         int i;
 
-        for (i=0; i<nconn; i++) {
-                if (msg->pid == pids[i]) {
-                        // send ack
-                        msg->type = ACK;
-                }
-                else {
-                        // send op
-                        msg->type = MSG;
-                }
-
+        for (i=0; i<nconn; i++)
                 write(conn[i], msg, sizeof(message));
-        }
 }
 
 void

@@ -23,7 +23,6 @@ typedef struct {
 } operation;
 
 typedef struct {
-        int type;
         uint32_t pid;
         uint32_t rev;
         operation op;

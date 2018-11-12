@@ -9,8 +9,6 @@
 static queue *Log;
 static queue *pend;
 
-uint32_t revision = 0;
-
 static void
 log_put(message *msg)
 {
@@ -27,15 +25,16 @@ log_put(message *msg)
         // walk forward, transforming op
         for (i+=1; i<Log->n; i++) {
                 lmsg = Log->arr[i];
-                msg->op = op_transform(msg->op, lmsg->op);
+                msg->op = op_transform(msg->op, lmsg->op, msg->pid, lmsg->pid);
         }
 
 perf:
-        revision++;
+        if (NULLOP != msg->op.type)
+                revision++;
+        q_push(Log, msg);
         op_perform(msg->op);
         msg->rev = revision;
         net_server_broadcast(msg);
-        q_push(Log, msg);
 }
 
 void

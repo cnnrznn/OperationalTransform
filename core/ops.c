@@ -1,6 +1,6 @@
 #include "ops.h"
 
-char document[DOCSIZE];
+char document[DOCSIZE+1];
 uint32_t revision = 0;
 
 static operation

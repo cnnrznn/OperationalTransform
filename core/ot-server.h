@@ -3,8 +3,6 @@
 
 #include "ops.h"
 
-extern uint32_t revision;
-
 void print_log(FILE *);
 
 void ot_server_init(void);
