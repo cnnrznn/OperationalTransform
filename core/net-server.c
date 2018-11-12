@@ -63,8 +63,15 @@ static int
 recv_message(int sk)
 {
         message tmp, *msg;
-        if (0 == read(sk, &tmp, sizeof(message)))
+        ssize_t size;
+
+        if (0 == (size = recv(sk, &tmp, sizeof(message), 0)))
                 return -1;
+
+        if (sizeof(message) != size) {
+                fprintf(stderr, "BAD PACKET SIZE: %ld\n", size);
+                exit(1);
+        }
 
         msg = malloc(sizeof(message));
         memcpy(msg, &tmp, sizeof(message));
