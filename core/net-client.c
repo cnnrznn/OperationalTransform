@@ -14,7 +14,7 @@
 
 static int sk;
 char net_client_inflight = 0;
-static int pid;
+int pid;
 
 int
 net_client_init()
@@ -41,7 +41,7 @@ net_client_init()
 
         // receive PID
         read(sk, &pid, sizeof(int));
-        fprintf(stderr, "PID: %d\n", pid);
+        //fprintf(stderr, "PID: %d\n", pid);
 
         // receive current document, revision
         read(sk, &document, DOCSIZE);
@@ -77,16 +77,23 @@ void
 net_client_drain()
 {
         message msg;
+        ssize_t size;
 
-        while (recv(sk, &msg, sizeof(message), MSG_DONTWAIT) > 0) {
-                revision = msg.rev;
+        while ((size = recv(sk, &msg, sizeof(message), MSG_DONTWAIT)) > 0) {
+                if (sizeof(message) != size) {
+                        fprintf(stderr, "BAD PACKET SIZE: %ld\n", size);
+                        exit(1);
+                }
+
+                if (NULLOP != msg.op.type)
+                        revision = msg.rev;
 
                 switch (msg.type) {
                 case ACK:
                         net_client_inflight = 0;
                         break;
                 case MSG:
-                        ot_client_put_serv_op(&msg.op);
+                        ot_client_put_serv_msg(&msg);
                         break;
                 }
         }
