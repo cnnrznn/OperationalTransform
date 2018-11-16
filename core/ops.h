@@ -13,7 +13,7 @@
 #define ACK     1
 #define MSG     2
 
-extern char document[];
+extern char *document;
 extern uint32_t revision;
 
 typedef struct {
@@ -30,6 +30,12 @@ typedef struct {
 
 operation
 op_transform(operation a, operation b, int, int);
+
+size_t
+get_docsize();
+
+void
+op_init(size_t);
 
 void
 op_perform(operation o);

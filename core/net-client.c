@@ -20,6 +20,7 @@ int
 net_client_init()
 {
         struct addrinfo hints, *res;
+        size_t size;
 
         memset(&hints, 0, sizeof(hints));
         hints.ai_family = AF_INET;
@@ -44,7 +45,9 @@ net_client_init()
         //fprintf(stderr, "PID: %d\n", pid);
 
         // receive current document, revision
-        read(sk, &document, DOCSIZE);
+        read(sk, &size, sizeof(size_t));
+        op_init(size);
+        read(sk, document, size);
         read(sk, &revision, sizeof(uint32_t));
 
         return 0;

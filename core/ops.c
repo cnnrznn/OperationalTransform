@@ -1,6 +1,11 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "ops.h"
 
-char document[DOCSIZE+1];
+char *document = NULL;
+static size_t size = 0;
+static size_t last = 0;
 uint32_t revision = 0;
 
 static operation
@@ -79,11 +84,28 @@ op_transform(operation a, operation b, int pa, int pb)
         return a;
 }
 
+size_t
+get_docsize()
+{
+        return size;
+}
+
 void
 print_document(FILE *f)
 {
-        document[DOCSIZE] = '\0';
+        char tmp = document[size-1];
+        document[size-1] = '\0';
         fprintf(f, "%u---%s\n", revision, document);
+        document[size-1] = tmp;
+}
+
+void
+op_init(size_t _size)
+{
+        size = _size;
+        last = 0;
+        document = realloc(document, size);
+        memset(document, ' ', size);
 }
 
 void
@@ -91,19 +113,28 @@ op_perform(operation o)
 {
         int i;
 
-        if (o.pos >= DOCSIZE)
-                return;
-
         switch (o.type) {
         case INSERT:
-                for (i=DOCSIZE-1; i>o.pos; i--)
+                last = (o.pos <= last) ? last+1 : o.pos;
+                while (size <= last) {
+                        size *= 2;
+                        document = realloc(document, size);
+                        memset(document+last+1, ' ', size-last-1);
+                }
+
+                for (i=size-1; i>o.pos; i--)
                         document[i] = document[i-1];
                 document[o.pos] = o.c;
                 break;
         case REMOVE:
-                for (i=o.pos; i<DOCSIZE-1; i++)
+                if (0 == last)
+                        last = last;
+                else if (o.pos <= last)
+                        last--;
+
+                for (i=o.pos; i<size-1; i++)
                         document[i] = document[i+1];
-                document[DOCSIZE-1] = '\0';
+                document[size-1] = ' ';
                 break;
         }
 }

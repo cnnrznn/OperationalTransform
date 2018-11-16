@@ -13,7 +13,6 @@
 
 static int lsk;
 static int conn[1024];
-static int pids[1024];
 static int nconn = 0;
 static fd_set rfds;
 static int fdmax;
@@ -27,7 +26,6 @@ remove_conn(int i)
 
         for (; i<nconn-1; i++) {
                 conn[i] = conn[i+1];
-                pids[i] = pids[i+1];
         }
 
         nconn--;
@@ -39,10 +37,10 @@ add_conn()
         int newfd;
         struct sockaddr_storage addr;
         socklen_t addr_size = sizeof(addr);
+        size_t size;
 
         newfd = accept(lsk, (struct sockaddr *)&addr, &addr_size);
         conn[nconn] = newfd;
-        pids[nconn] = next_pid;
         nconn++;
         FD_SET(newfd, &rfds);
         if (newfd > fdmax)
@@ -53,7 +51,9 @@ add_conn()
         next_pid++;
 
         // send DOCUMENT
-        write(newfd, document, DOCSIZE);
+        size = get_docsize();
+        write(newfd, &size, sizeof(size_t));
+        write(newfd, document, size);
 
         // send REVISION
         write(newfd, &revision, sizeof(uint32_t));
@@ -115,6 +115,8 @@ net_server_init()
         FD_ZERO(&rfds);
         FD_SET(lsk, &rfds);
         fdmax = lsk;
+
+        op_init(256);
 
         return 0;
 }
