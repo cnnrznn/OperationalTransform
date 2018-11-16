@@ -20,7 +20,7 @@ do_input()
 {
         operation *op;
 
-        if (rand()%1000 > 200)
+        if (rand()%1000 > 600)
                 return;
 
         op = malloc(sizeof(operation));
