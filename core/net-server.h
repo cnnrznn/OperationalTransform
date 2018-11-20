@@ -1,7 +1,7 @@
 #ifndef _NET_SERVER_H
 #define _NET_SERVER_H
 
-int net_server_init(void);
+int net_server_init(char *port);
 void net_server_free(void);
 
 void net_server_drain(void);

@@ -81,7 +81,7 @@ recv_message(int sk)
 }
 
 int
-net_server_init()
+net_server_init(char *port)
 {
         struct addrinfo hints, *res;
 
@@ -90,7 +90,7 @@ net_server_init()
         hints.ai_socktype = SOCK_STREAM;
         hints.ai_flags = AI_PASSIVE;
 
-        getaddrinfo(NULL, PORT, &hints, &res);
+        getaddrinfo(NULL, port, &hints, &res);
 
         if ((lsk = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) < 0) {
                 perror("Failed to create socket");

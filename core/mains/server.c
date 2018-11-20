@@ -20,17 +20,21 @@ sigint_handler(int sig)
 
 int main(int argc, char **argv)
 {
+        char *port;
+
         signal(SIGINT, sigint_handler);
 
+        port = argv[1];
+
         ot_server_init();
-        net_server_init();
+        net_server_init(port);
 
         while (cont) {
                 fprintf(stderr, "Server loop\n");
                 net_server_drain();
                 ot_server_drain();
 
-                print_log(stderr);
+                //print_log(stderr);
                 print_document(stderr);
         }
 
