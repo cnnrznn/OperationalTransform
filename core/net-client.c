@@ -17,7 +17,7 @@ char net_client_inflight = 0;
 int pid;
 
 int
-net_client_init()
+net_client_init(char *ip, char *port)
 {
         struct addrinfo hints, *res;
         size_t size;
@@ -26,7 +26,7 @@ net_client_init()
         hints.ai_family = AF_INET;
         hints.ai_socktype = SOCK_STREAM;
 
-        getaddrinfo("10.10.0.100", PORT, &hints, &res);
+        getaddrinfo(ip, port, &hints, &res);
 
         if ((sk = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) < 0) {
                 perror("Failed to create socket");

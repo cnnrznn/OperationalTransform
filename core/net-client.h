@@ -4,7 +4,7 @@
 extern char net_client_inflight;
 extern int pid;
 
-int net_client_init(void);
+int net_client_init(char *, char *);
 void net_client_free(void);
 
 void net_client_send(operation *);

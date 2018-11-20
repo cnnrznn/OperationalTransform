@@ -20,7 +20,7 @@ do_input()
 {
         operation *op;
 
-        if (rand()%1000 > 600)
+        if (rand()%1000 > 900)
                 return;
 
         op = malloc(sizeof(operation));
@@ -40,11 +40,15 @@ sigint_handler(int sig)
 int main(int argc, char **argv)
 {
         operation op, *newop;
+        char *ip, *port;
 
         signal(SIGINT, sigint_handler);
         srand(time(NULL));
 
-        if (ot_client_init() || net_client_init())
+        ip = argv[1];
+        port = argv[2];
+
+        if (ot_client_init() || net_client_init(ip, port))
                 goto cleanup;
 
         //// "instant user input"
