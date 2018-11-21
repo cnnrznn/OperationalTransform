@@ -73,6 +73,7 @@ int main(int argc, char **argv)
                 ot_client_drain();
 
                 print_document(stdout);
+                fflush(stdout);
 
                 sleep(1);
         }

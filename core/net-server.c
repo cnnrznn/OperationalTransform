@@ -102,10 +102,10 @@ net_server_init(char *port)
                 return -1;
         }
 
-        fprintf(stderr, "Bound %d to (%d, %s)\n",
-                                        lsk,
-                                        ntohs(((struct sockaddr_in *)res->ai_addr)->sin_port),
-                                        inet_ntoa(((struct sockaddr_in *)res->ai_addr)->sin_addr));
+        //fprintf(stderr, "Bound %d to (%d, %s)\n",
+        //                                lsk,
+        //                                ntohs(((struct sockaddr_in *)res->ai_addr)->sin_port),
+        //                                inet_ntoa(((struct sockaddr_in *)res->ai_addr)->sin_addr));
 
         freeaddrinfo(res);
 
