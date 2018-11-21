@@ -34,7 +34,7 @@ int main(int argc, char **argv)
                 ot_server_drain();
 
                 //print_log(stderr);
-                //print_document(stdout);
+                print_document(stdout);
         }
 
         net_server_free();
