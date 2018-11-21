@@ -72,8 +72,8 @@ int main(int argc, char **argv)
                 net_client_drain();
                 ot_client_drain();
 
-                print_document(stdout);
-                fflush(stdout);
+                //print_document(stdout);
+                //fflush(stdout);
 
                 sleep(1);
         }

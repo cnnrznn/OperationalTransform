@@ -103,7 +103,4 @@ ot_client_put_serv_msg(message *msg)
 
         // apply op
         op_perform(newop);
-
-        fprintf(stderr, "%u,%u,%d,%c,%u\n", revision, msg->pid, msg->op.type, msg->op.c,
-                                                msg->op.pos);
 }
