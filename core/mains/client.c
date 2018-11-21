@@ -69,11 +69,10 @@ int main(int argc, char **argv)
                         i++;
                 }
 
-                //fprintf(stderr, "Client loop\n");
                 net_client_drain();
                 ot_client_drain();
 
-                print_document(stderr);
+                print_document(stdout);
 
                 sleep(1);
         }

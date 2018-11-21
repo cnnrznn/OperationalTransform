@@ -30,12 +30,11 @@ int main(int argc, char **argv)
         net_server_init(port);
 
         while (cont) {
-                fprintf(stderr, "Server loop\n");
                 net_server_drain();
                 ot_server_drain();
 
                 //print_log(stderr);
-                print_document(stderr);
+                print_document(stdout);
         }
 
         net_server_free();

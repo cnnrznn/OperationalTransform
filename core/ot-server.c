@@ -29,12 +29,12 @@ log_put(message *msg)
         }
 
 perf:
-        fprintf(stdout, "%u,%u,%d,%c,%u\n", msg->rev, msg->pid, msg->op.type, msg->op.c,
-                                                msg->op.pos);
-        fflush(stdout);
-
         if (NULLOP != msg->op.type)
                 revision++;
+
+        fprintf(stderr, "%u,%u,%d,%c,%u\n", revision, msg->pid, msg->op.type, msg->op.c,
+                                                msg->op.pos);
+
         q_push(Log, msg);
         op_perform(msg->op);
         msg->rev = revision;

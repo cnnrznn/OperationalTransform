@@ -69,6 +69,9 @@ ot_client_put_user_op(operation *op)
 
         // apply operation
         op_perform(*op);
+
+        fprintf(stderr, "%u,%u,%d,%c,%u\n", revision, pid, op->type, op->c,
+                                                op->pos);
 }
 
 /*
@@ -100,4 +103,7 @@ ot_client_put_serv_msg(message *msg)
 
         // apply op
         op_perform(newop);
+
+        fprintf(stderr, "%u,%u,%d,%c,%u\n", revision, msg->pid, msg->op.type, msg->op.c,
+                                                msg->op.pos);
 }
