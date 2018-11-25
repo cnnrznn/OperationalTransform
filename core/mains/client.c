@@ -39,7 +39,6 @@ sigint_handler(int sig)
 
 int main(int argc, char **argv)
 {
-        operation op, *newop;
         char *ip, *port;
 
         signal(SIGINT, sigint_handler);
@@ -51,31 +50,9 @@ int main(int argc, char **argv)
         if (ot_client_init() || net_client_init(ip, port))
                 goto cleanup;
 
-        //// "instant user input"
-        //while (EOF != scanf("%d,%c,%u", &op.type, &op.c, &op.pos)) {
-        //        newop = malloc(sizeof(operation));
-        //        memcpy(newop, &op, sizeof(operation));
-
-        //        ot_client_put_user_op(newop);
-        //}
-
-        //print_document(stderr);
-
-        //for (i=0; i<NROUNDS*10; i++) {
-        i=0;
         while (1) {
-                if (NROUNDS > i) {
-                        do_input();
-                        i++;
-                }
-
                 net_client_drain();
                 ot_client_drain();
-
-                print_document(stdout);
-                fflush(stdout);
-
-                sleep(1);
         }
 
 cleanup:

@@ -103,4 +103,7 @@ ot_client_put_serv_msg(message *msg)
 
         // apply op
         op_perform(newop);
+
+        fprintf(stdout, "%d,%c,%u\n", newop.type, newop.c, newop.pos);
+        fflush(stdout);
 }

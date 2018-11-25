@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,11 +77,28 @@ net_client_send(operation *op)
 void
 net_client_drain()
 {
+        struct pollfd *fds;
+        operation *op;
         message msg;
         ssize_t size;
 
-        while ((size = recv(sk, &msg, sizeof(message), MSG_DONTWAIT)) > 0) {
-                if (sizeof(message) != size) {
+        // TODO error-check lots of things
+
+        fds = malloc(2 * sizeof(struct pollfd));
+        fds[0].fd = 0;
+        fds[0].events = POLLIN;
+        fds[1].fd = sk;
+        fds[1].events = POLLIN;
+
+        poll(fds, 2, -1);
+        if (fds[0].revents & POLLIN) {
+                op = malloc(sizeof(operation));
+                scanf("%d,%c,%u", &op->type, &op->c, &op->pos);
+
+                ot_client_put_user_op(op);
+        }
+        if (fds[1].revents & POLLIN) {
+                if (sizeof(message) != (size = recv(sk, &msg, sizeof(message), MSG_DONTWAIT))) {
                         fprintf(stderr, "BAD PACKET SIZE: %ld\n", size);
                         exit(1);
                 }
