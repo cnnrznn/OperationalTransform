@@ -7,56 +7,29 @@
 
 #include "ot-client.h"
 #include "ops.h"
-#include "net-client.h"
 #include "queue.h"
-
-#define NROUNDS 100
-
-static int i;
-static char cont = 1;
-
-static void
-do_input()
-{
-        operation *op;
-
-        if (rand()%1000 > 900)
-                return;
-
-        op = malloc(sizeof(operation));
-        op->type = (rand() % 2) + 1;
-        op->c = (rand() % 26) + 97; // a through z
-        op->pos = rand() % DOCSIZE;
-
-        ot_client_put_user_op(op);
-}
-
-static void
-sigint_handler(int sig)
-{
-        cont = 0;
-}
 
 int main(int argc, char **argv)
 {
-        char *ip, *port;
+        int pid;
 
-        signal(SIGINT, sigint_handler);
-        srand(time(NULL));
+        if (argc < 3) {
+                fprintf(stderr, "Usage: ./client <pid> <revision>\n");
+                exit(1);
+        }
 
-        ip = argv[1];
-        port = argv[2];
+        pid = atoi(argv[1]);
+        revision = atoi(argv[2]);
 
-        if (ot_client_init() || net_client_init(ip, port))
+        if (ot_client_init(pid))
                 goto cleanup;
 
         while (1) {
-                net_client_drain();
-                ot_client_drain();
+                ot_client_consume(stdin);
+                ot_client_produce(stdout);
         }
 
 cleanup:
-        net_client_free();
         ot_client_free();
 
         return 0;

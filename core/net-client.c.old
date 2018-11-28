@@ -41,6 +41,8 @@ net_client_init(char *ip, char *port)
                 return -1;
         }
 
+        sk = 0;
+
         // receive PID
         read(sk, &pid, sizeof(int));
         //fprintf(stderr, "PID: %d\n", pid);
