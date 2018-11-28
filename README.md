@@ -3,7 +3,7 @@ C code for a generic operational transform collaboration system. Operations prov
 
 ## Using the engine
 To use the engine, a program writes to `stdin` and reads from `stdout`.
-The information communicated is different for the client and server side code, but **operations** are of the form:
+The input and output data consists of **operations**, which have the form:
 
 `<pid>,<revision>,<op-type>,<op-char>,<op-position>`
 
