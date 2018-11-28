@@ -34,4 +34,6 @@ An example of client and server code can be found under `example/`.
 This implementation was designed to be adaptable.
 Although the current `ops.*` files implement basic document operations (INSERT,REMOVE), the `ot-{client,server}` code is agnostic and the operations can be easily swapped out.
 
+// TODO work is still needed to realize this
+
 ## References
