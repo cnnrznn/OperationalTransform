@@ -102,21 +102,20 @@ ot_server_consume(FILE *stream)
 {
         message msg, *newMsg;
 
-        while (5 == fscanf(stream, "%d,%u,%d,%c,%u", &msg.pid, &msg.rev,
+        if (5 != fscanf(stream, "%d,%u,%d,%c,%u", &msg.pid, &msg.rev,
                                                 &msg.op.type, &msg.op.c, &msg.op.pos)) {
-                if (-2 == msg.pid)
-                        break;
-
-                newMsg = malloc(sizeof(message));
-                newMsg->pid = msg.pid;
-                newMsg->rev = msg.rev;
-                newMsg->op.type = msg.op.type;
-                newMsg->op.c = msg.op.c;
-                newMsg->op.pos = msg.op.pos;
-
-                q_push(pend, newMsg);
-
-                fprintf(stderr, "consumed: %d,%u,%d,%c,%u\n", msg.pid, msg.rev, msg.op.type,
-                                                        msg.op.c, msg.op.pos);
+                exit(1);
         }
+
+        newMsg = malloc(sizeof(message));
+        newMsg->pid = msg.pid;
+        newMsg->rev = msg.rev;
+        newMsg->op.type = msg.op.type;
+        newMsg->op.c = msg.op.c;
+        newMsg->op.pos = msg.op.pos;
+
+        q_push(pend, newMsg);
+
+        fprintf(stderr, "consumed: %d,%u,%d,%c,%u\n", msg.pid, msg.rev, msg.op.type,
+                                                msg.op.c, msg.op.pos);
 }

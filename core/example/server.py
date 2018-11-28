@@ -89,7 +89,7 @@ def main():
                                                             msg['type'], msg['char'], msg['pos']))
                     ct += 1
 
-        engine.stdin.write('{0},{1},{1},{1},{1}\n'.format(-2, 0))
+        #engine.stdin.write('{0},{1},{1},{1},{1}\n'.format(-2, 0))
 
         for i in range(ct):
             revision += 1

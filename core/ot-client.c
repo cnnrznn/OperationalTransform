@@ -132,16 +132,15 @@ ot_client_consume(FILE *stream)
 {
         message msg;
 
-        while (5 == fscanf(stream, "%d,%u,%d,%c,%u", &msg.pid, &msg.rev,
+        if (5 != fscanf(stream, "%d,%u,%d,%c,%u", &msg.pid, &msg.rev,
                                         &msg.op.type, &msg.op.c, &msg.op.pos)) {
-                if (-2 == msg.pid)
-                        break;
-
-                if (-1 == msg.pid)
-                        ot_client_put_user_msg(&msg);
-                else
-                        ot_client_put_serv_msg(&msg);
+                exit(1);
         }
+
+        if (-1 == msg.pid)
+                ot_client_put_user_msg(&msg);
+        else
+                ot_client_put_serv_msg(&msg);
 }
 
 void
