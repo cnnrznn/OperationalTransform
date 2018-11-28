@@ -29,7 +29,7 @@ def main():
     msg = dict()
     msg['pid'] = pid
     msg['revision'] = revision
-    msg['type'] = 0
+    msg['type'] = 1
     msg['char'] = 'c'
     msg['pos'] = 10
 

@@ -22,6 +22,32 @@ def safe_send(sk, buf):
 
     return
 
+def line2msg(line):
+    data = line.split(',')
+
+    msg = dict()
+    msg['pid'] = int(data[0])
+    msg['revision'] = int(data[1])
+    msg['type'] = int(data[2])
+    msg['char'] = data[3]
+    msg['pos'] = int(data[4])
+
+    return msg
+
+def op_perform(buf, msg):
+    typ = msg['type']
+    c = msg['char']
+    pos = msg['pos']
+
+    if 1 == typ:
+        if len(buf) < pos:
+            buf.extend([' '] * (pos - len(buf)))
+        buf.insert(pos, c)
+    elif 2 == typ:
+        buf.pop(pos)
+
+    return buf
+
 def main():
     revision = 0
     buf = []
@@ -63,12 +89,16 @@ def main():
                                                             msg['type'], msg['char'], msg['pos']))
                     ct += 1
 
-        engine.stdin.write('{0},{1},{1},{1},{1}\n'.format(-1, 0))
+        engine.stdin.write('{0},{1},{1},{1},{1}\n'.format(-2, 0))
 
         for i in range(ct):
-            # read, perform, broadcast every operation
-            print(engine.stdout.readline())
             revision += 1
+
+            data = engine.stdout.readline()
+            msg = line2msg(data)
+            buf = op_perform(buf, msg)
+
+            # TODO broadcast msg
 
 if __name__ == '__main__':
     main()

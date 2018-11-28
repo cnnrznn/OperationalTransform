@@ -104,7 +104,7 @@ ot_server_consume(FILE *stream)
 
         while (5 == fscanf(stream, "%d,%u,%d,%c,%u", &msg.pid, &msg.rev,
                                                 &msg.op.type, &msg.op.c, &msg.op.pos)) {
-                if (msg.pid < 0)
+                if (-2 == msg.pid)
                         break;
 
                 newMsg = malloc(sizeof(message));
