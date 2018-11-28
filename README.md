@@ -31,5 +31,7 @@ Otherwise, the operation is intended for the server.
 An example of client and server code can be found under `example/`.
 
 ## Modularity
+This implementation was designed to be adaptable.
+Although the current `ops.*` files implement basic document operations (INSERT,REMOVE), the `ot-{client,server}` code is agnostic and the operations can be easily swapped out.
 
 ## References
