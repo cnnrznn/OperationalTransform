@@ -34,6 +34,7 @@ int
 ot_client_init(int _pid)
 {
         pend = q_alloc(8);
+        outq = q_alloc(8);
         pid = _pid;
 
         return 0;
@@ -46,6 +47,7 @@ void
 ot_client_free()
 {
         q_free(pend);
+        q_free(outq);
 }
 
 /*
@@ -62,7 +64,13 @@ ot_client_put_user_msg(message *msg)
 }
 
 /*
- * Receive an operation from the server to transform pending operations against.
+ * Receive an operation from the server.
+ * If it was an operation generated locally,
+ *      remove the 'inflight' marker and do nothing.
+ * If it was an operation generated remotelly,
+ *      transform it and the pending queue against
+ *      each other, and output the transformed
+ *      remote operation.
  */
 static void
 ot_client_put_serv_msg(message *msg)
@@ -100,7 +108,7 @@ ot_client_put_serv_msg(message *msg)
 /*
  * Get the next pending operation to send to the server.
  * If there is already an operation in flight, or the
- * pending queue is empty, do nothing.
+ * pending queue is empty, or the operation is NULLOP, do nothing.
  */
 static void
 ot_client_drain()
@@ -127,6 +135,11 @@ ot_client_drain()
         }
 }
 
+/*
+ * Consume operations from stdin.
+ *
+ * BLOCKS
+ */
 void
 ot_client_consume(FILE *stream)
 {
@@ -143,6 +156,11 @@ ot_client_consume(FILE *stream)
                 ot_client_put_serv_msg(&msg);
 }
 
+/*
+ * Produce operations to stdout.
+ * Operations include transformed remotely generated
+ * ones and local ones ready to be sent to the server.
+ */
 void
 ot_client_produce(FILE *stream)
 {
