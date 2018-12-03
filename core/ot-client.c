@@ -79,6 +79,8 @@ ot_client_put_serv_msg(message *msg)
         message *newMsg;
         int i;
 
+        revision = msg->rev;
+
         if (pid == msg->pid) {
                 ot_client_inflight = 0;
                 free(q_pop(pend));
