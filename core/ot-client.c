@@ -147,7 +147,7 @@ ot_client_consume(FILE *stream)
 {
         message msg;
 
-        if (5 != fscanf(stream, "%d,%u,%d,%c,%u", &msg.pid, &msg.rev,
+        if (5 != fscanf(stream, "%d,%u,%d,%d,%u", &msg.pid, &msg.rev,
                                         &msg.op.type, &msg.op.c, &msg.op.pos)) {
                 exit(1);
         }

@@ -18,7 +18,7 @@ extern uint32_t revision;
 
 typedef struct {
         int type;
-        char c;
+        int c;
         uint32_t pos;
 } operation;
 
