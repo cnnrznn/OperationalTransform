@@ -53,9 +53,9 @@ perf:
 
         q_push(Log, msg);
 
-        fprintf(stream, "%d,%u,%d,%c,%u\n", msg->pid, msg->rev, msg->op.type, msg->op.c,
+        fprintf(stream, "%d,%u,%d,%d,%u\n", msg->pid, msg->rev, msg->op.type, msg->op.c,
                                                 msg->op.pos);
-        fprintf(stderr, "produced: %d,%u,%d,%c,%u\n", msg->pid, msg->rev, msg->op.type, msg->op.c,
+        fprintf(stderr, "produced: %d,%u,%d,%d,%u\n", msg->pid, msg->rev, msg->op.type, msg->op.c,
                                                 msg->op.pos);
         fflush(stream);
 }
@@ -116,6 +116,6 @@ ot_server_consume(FILE *stream)
 
         q_push(pend, newMsg);
 
-        fprintf(stderr, "consumed: %d,%u,%d,%c,%u\n", msg.pid, msg.rev, msg.op.type,
+        fprintf(stderr, "consumed: %d,%u,%d,%d,%u\n", msg.pid, msg.rev, msg.op.type,
                                                 msg.op.c, msg.op.pos);
 }

@@ -171,7 +171,7 @@ ot_client_produce(FILE *stream)
         ot_client_drain();
 
         while (NULL != (msg = q_pop(outq))) {
-                fprintf(stream, "%d,%u,%d,%c,%u\n", msg->pid, msg->rev,
+                fprintf(stream, "%d,%u,%d,%d,%u\n", msg->pid, msg->rev,
                                                 msg->op.type, msg->op.c, msg->op.pos);
                 fflush(stream);
                 free(msg);
