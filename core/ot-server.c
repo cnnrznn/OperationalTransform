@@ -27,8 +27,8 @@ print_log(FILE *f)
         fprintf(f, "\n");
 }
 
-static void
-log_put(message *msg, FILE *stream)
+static message *
+log_put(message *msg)
 {
         int i;
         message *lmsg;
@@ -53,11 +53,7 @@ perf:
 
         q_push(Log, msg);
 
-        fprintf(stream, "%d,%u,%d,%d,%u\n", msg->pid, msg->rev, msg->op.type, msg->op.c,
-                                                msg->op.pos);
-        fprintf(stderr, "produced: %d,%u,%d,%d,%u\n", msg->pid, msg->rev, msg->op.type, msg->op.c,
-                                                msg->op.pos);
-        fflush(stream);
+        return msg;
 }
 
 /*
@@ -84,13 +80,15 @@ ot_server_free()
  * Process all the messages on the pending
  * queue and produce the results on the stream.
  */
-void
-ot_server_produce(FILE *stream)
+message *
+ot_server_produce(void)
 {
         message *msg;
 
-        while (NULL != (msg = q_pop(pend)))
-                log_put(msg, stream);
+        if (NULL != (msg = q_pop(pend)))
+                return log_put(msg);
+
+        return NULL;
 }
 
 /*
@@ -98,24 +96,16 @@ ot_server_produce(FILE *stream)
  * to the pending queue
  */
 void
-ot_server_consume(FILE *stream)
+ot_server_consume(message *msg)
 {
-        message msg, *newMsg;
-
-        if (5 != fscanf(stream, "%d,%u,%d,%d,%u", &msg.pid, &msg.rev,
-                                                &msg.op.type, &msg.op.c, &msg.op.pos)) {
-                exit(1);
-        }
+        message *newMsg;
 
         newMsg = malloc(sizeof(message));
-        newMsg->pid = msg.pid;
-        newMsg->rev = msg.rev;
-        newMsg->op.type = msg.op.type;
-        newMsg->op.c = msg.op.c;
-        newMsg->op.pos = msg.op.pos;
+        newMsg->pid = msg->pid;
+        newMsg->rev = msg->rev;
+        newMsg->op.type = msg->op.type;
+        newMsg->op.c = msg->op.c;
+        newMsg->op.pos = msg->op.pos;
 
         q_push(pend, newMsg);
-
-        fprintf(stderr, "consumed: %d,%u,%d,%d,%u\n", msg.pid, msg.rev, msg.op.type,
-                                                msg.op.c, msg.op.pos);
 }

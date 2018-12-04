@@ -21,7 +21,7 @@ int main(int argc, char **argv)
         pid = atoi(argv[1]);
         revision = atoi(argv[2]);
 
-        ot_client_init(pid)
+        ot_client_init(pid);
 
         while (1) {
                 //ot_client_consume(stdin);

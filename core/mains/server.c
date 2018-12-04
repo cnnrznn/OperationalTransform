@@ -14,8 +14,9 @@ int main(int argc, char **argv)
         ot_server_init();
 
         while (1) {
-                ot_server_consume(stdin);
-                ot_server_produce(stdout);
+                //ot_server_consume(stdin);
+                //ot_server_produce(stdout);
+                break;
         }
 
         ot_server_free();
