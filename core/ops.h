@@ -4,16 +4,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define DOCSIZE 128
-
 #define INSERT  1
 #define REMOVE  2
 #define NULLOP  3
 
-#define ACK     1
-#define MSG     2
-
-extern char *document;
 extern uint32_t revision;
 
 typedef struct {
@@ -30,17 +24,5 @@ typedef struct {
 
 operation
 op_transform(operation a, operation b, int, int);
-
-size_t
-get_docsize();
-
-void
-op_init(size_t);
-
-void
-op_perform(operation o);
-
-void
-print_document(FILE *);
 
 #endif /* _OPS_H */
