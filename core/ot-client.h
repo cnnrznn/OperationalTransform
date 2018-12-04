@@ -3,11 +3,11 @@
 
 #include "ops.h"
 
-int ot_client_init(int pid);
+void ot_client_init(int pid);
 void ot_client_free(void);
 
-void ot_client_produce(FILE *stream);
-void ot_client_consume(FILE *stream);
+message* ot_client_produce(void);
+void ot_client_consume(message*);
 
 void print_pend(FILE *);
 

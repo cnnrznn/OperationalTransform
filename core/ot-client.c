@@ -30,14 +30,12 @@ print_pend(FILE *f)
 /*
  * Initialize this module.
  */
-int
+void
 ot_client_init(int _pid)
 {
         pend = q_alloc(8);
         outq = q_alloc(8);
         pid = _pid;
-
-        return 0;
 }
 
 /*
@@ -143,19 +141,12 @@ ot_client_drain()
  * BLOCKS
  */
 void
-ot_client_consume(FILE *stream)
+ot_client_consume(message *msg)
 {
-        message msg;
-
-        if (5 != fscanf(stream, "%d,%u,%d,%d,%u", &msg.pid, &msg.rev,
-                                        &msg.op.type, &msg.op.c, &msg.op.pos)) {
-                exit(1);
-        }
-
-        if (-1 == msg.pid)
-                ot_client_put_user_msg(&msg);
+        if (-1 == msg->pid)
+                ot_client_put_user_msg(msg);
         else
-                ot_client_put_serv_msg(&msg);
+                ot_client_put_serv_msg(msg);
 }
 
 /*
@@ -163,18 +154,12 @@ ot_client_consume(FILE *stream)
  * Operations include transformed remotely generated
  * ones and local ones ready to be sent to the server.
  */
-void
-ot_client_produce(FILE *stream)
+message *
+ot_client_produce(void)
 {
         message *msg;
 
         ot_client_drain();
 
-        while (NULL != (msg = q_pop(outq))) {
-                fprintf(stream, "%d,%u,%d,%d,%u\n", msg->pid, msg->rev,
-                                                msg->op.type, msg->op.c, msg->op.pos);
-                free(msg);
-        }
-
-        fflush(stream);
+        return q_pop(outq);
 }

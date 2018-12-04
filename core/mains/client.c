@@ -21,12 +21,12 @@ int main(int argc, char **argv)
         pid = atoi(argv[1]);
         revision = atoi(argv[2]);
 
-        if (ot_client_init(pid))
-                goto cleanup;
+        ot_client_init(pid)
 
         while (1) {
-                ot_client_consume(stdin);
-                ot_client_produce(stdout);
+                //ot_client_consume(stdin);
+                //ot_client_produce(stdout);
+                break;
         }
 
 cleanup:
