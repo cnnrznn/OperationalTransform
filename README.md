@@ -1,18 +1,8 @@
 # OperationalTransform
-C code for a generic operational transform collaboration system. Operations provided pertain to basic document editing.
+C library for a generic operational transform collaboration system. Operations provided pertain to basic document editing.
 
 ## Using the engine
-To use the engine, a program writes to `stdin` and reads from `stdout`.
-The input and output data consists of **operations**, which have the form:
-
-`<pid>,<revision>,<op-type>,<op-char>,<op-position>`
-
-... hehe, "opposition" :P
-
-### Booting the engine
-`./server`
-
-`./client <pid> <revision>`
+To use the engine, become familiar with the `struct message` format found in `ops.h`.
 
 ### Server
 The server-side engine consumes operations from clients.
@@ -27,13 +17,8 @@ The client-side engine produces both operations to be sent to the server and ope
 Operations intended to be applied by the client are indicated by `pid = -1`.
 Otherwise, the operation is intended for the server.
 
-## Example Client/Server
-An example of client and server code can be found under `example/`.
-
 ## Modularity
 This implementation was designed to be adaptable.
 Although the current `ops.*` files implement basic document operations (INSERT,REMOVE), the `ot-{client,server}` code is agnostic and the operations can be easily swapped out.
-
-// TODO work is still needed to realize this
 
 ## References
