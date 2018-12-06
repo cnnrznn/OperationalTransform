@@ -7,3 +7,4 @@ add_executable(cdocs main.c)
 # linking
 target_link_libraries(cdocs user-input)
 target_link_libraries(cdocs ncurses)
+target_link_libraries(cdocs net)
