@@ -4,6 +4,7 @@
 #include "user-input.h"
 
 #define FNSIZE 128
+#define PORT "3333"
 
 int main()
 {
@@ -14,7 +15,7 @@ int main()
         noecho();
         keypad(stdscr, TRUE);
 
-        net_init();
+        net_init(PORT);
 
         get_document_name(stdscr, docfn, FNSIZE);
 

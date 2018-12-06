@@ -5,19 +5,31 @@
 
 #include "net.h"
 
-#define MASTER_IP "35.237.247.180"
-#define PORT "3333"
-
 static int sk;
-static struct sockaddr saddr, caddr;
-static socklen_t saddrlen, caddrlen;
+static struct sockaddr addr;
+static socklen_t addrlen;
 
 int
-net_init(void)
+net_init(char *port)
 {
         int status;
         struct addrinfo hints;
         struct addrinfo *res, *p;
+
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_DGRAM;
+
+        // get client (my) address
+        if ((status = getaddrinfo(NULL, port, &hints, &res)) != 0) {
+                // TODO print something?
+                goto err_addrinfo;
+        }
+
+        addr = *(res->ai_addr);
+        addrlen = res->ai_addrlen;
+
+        freeaddrinfo(res);
 
         // build socket
         if ((sk = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
@@ -25,30 +37,8 @@ net_init(void)
                 goto err_socket;
         }
 
-        memset(&hints, 0, sizeof(hints));
-        hints.ai_family = AF_INET;
-        hints.ai_socktype = SOCK_DGRAM;
-
-        // get server address
-        if ((status = getaddrinfo(MASTER_IP, PORT, &hints, &res)) != 0) {
-                // TODO print something?
-                goto err_addrinfo;
-        }
-        saddr = *(res->ai_addr);
-        saddrlen = res->ai_addrlen;
-        freeaddrinfo(res);
-
-        // get client (my) address
-        if ((status = getaddrinfo(NULL, PORT, &hints, &res)) != 0) {
-                // TODO print something?
-                goto err_addrinfo;
-        }
-        caddr = *(res->ai_addr);
-        caddrlen = res->ai_addrlen;
-        freeaddrinfo(res);
-
         // bind client (my) socket
-        if (-1 == (bind(sk, &caddr, caddrlen))) {
+        if (-1 == (bind(sk, &addr, addrlen))) {
                 // TODO print something?
                 goto err_bind;
         }
@@ -56,8 +46,8 @@ net_init(void)
         return 0;
 
 err_bind:
-err_addrinfo:
 err_socket:
+err_addrinfo:
 
         return -1;
 }
