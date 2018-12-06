@@ -51,3 +51,10 @@ err_addrinfo:
 
         return -1;
 }
+
+void
+net_fini(void)
+{
+        if (sk >= 0)
+                close(sk);
+}

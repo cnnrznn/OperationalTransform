@@ -4,4 +4,7 @@
 int
 net_init(char *port);
 
+void
+net_fini(void);
+
 #endif /* _NET_H */

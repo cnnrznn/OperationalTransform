@@ -19,6 +19,8 @@ int main()
 
         get_document_name(stdscr, docfn, FNSIZE);
 
+        net_fini();
+
         endwin();
 
         return 0;
