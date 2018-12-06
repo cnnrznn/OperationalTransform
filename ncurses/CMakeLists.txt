@@ -1,6 +1,3 @@
-cmake_minimum_required (VERSION 2.6)
-project (CDocs)
-
 # libraries
 add_library(user-input user-input.c)
 
