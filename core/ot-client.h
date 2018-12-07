@@ -3,8 +3,10 @@
 
 #include "ops.h"
 
-void ot_client_init(int pid);
+void ot_client_init();
 void ot_client_free(void);
+
+void ot_client_set_pid(int pid);
 
 message* ot_client_produce(void);
 void ot_client_consume(message*);

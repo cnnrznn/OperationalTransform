@@ -31,10 +31,15 @@ print_pend(FILE *f)
  * Initialize this module.
  */
 void
-ot_client_init(int _pid)
+ot_client_init()
 {
         pend = q_alloc(8);
         outq = q_alloc(8);
+}
+
+void
+ot_client_set_pid(int _pid)
+{
         pid = _pid;
 }
 
