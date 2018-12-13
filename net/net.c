@@ -1,4 +1,6 @@
+#include <arpa/inet.h>
 #include <netdb.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -20,11 +22,15 @@ net_init(char *port)
         memset(&hints, 0, sizeof(hints));
         hints.ai_family = AF_INET;
         hints.ai_socktype = SOCK_DGRAM;
+        hints.ai_flags = AI_PASSIVE;
 
         if ((status = getaddrinfo(NULL, port, &hints, &res)) != 0) {
                 // TODO print something?
                 goto err_addrinfo;
         }
+
+        fprintf(stderr, "getaddrinfo returned %s\n",
+                        inet_ntoa(((struct sockaddr_in *)res->ai_addr)->sin_addr));
 
         addr = *(res->ai_addr);
         addrlen = res->ai_addrlen;
@@ -80,7 +86,7 @@ net_sendto(void *buf, size_t len, char *host, char *port)
         hints.ai_socktype = SOCK_DGRAM;
 
         if ((status = getaddrinfo(host, port, &hints, &dest)) != 0) {
-                // TODO print something?
+                fprintf(stderr, "Fail at %s:%d\n", __FILE__, __LINE__);
                 goto err_addrinfo;
         }
 
@@ -89,6 +95,7 @@ net_sendto(void *buf, size_t len, char *host, char *port)
         freeaddrinfo(dest);
 
         if (n != len) {
+                perror("Sending udp packet");
                 return -1;
         }
         return 0;

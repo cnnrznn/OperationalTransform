@@ -14,7 +14,8 @@ int main()
         net_init(PORT);
 
         sprintf(buf_send, "Hello from Cambridge!");
-        net_sendto(buf_send, BUFLEN, "34.237.247.180", PORT);
+        fprintf(stderr, "net_sendto = %ld\n",
+                        net_sendto(buf_send, BUFLEN, "35.237.247.180", PORT));
 
         net_fini();
 
